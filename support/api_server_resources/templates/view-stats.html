@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style type="text/css">
+      body {
+       background: #eee;
+      }
+      .card {
+        margin: 5px;
+        cursor: pointer;
+      }
+      .card:hover {
+        border-color: #aaa;
+      }
+      .card-title {
+        margin: 10px;
+      }
+      .card .btn {
+        margin-top: 5px;
+      }
+      .list-group-item .btn {
+        margin-bottom: 5px;
+      }
+      .btn-space {
+        margin-right: 5px;
+      }
+      .top {
+        margin-top: 5px;
+      }
+      
+      #show-details {
+        cursor: pointer;
+      }
+      stats-details-controls {
+        justify-content: flex-end;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </head>
+  <body class="container">
+    <nav-bar class="row top">
+      <button id="back" class="btn btn-sm btn-outline-secondary "> &#x2190; </button>
+    </nav-bar>
+    
+    <home-title class="row display-4"></home-title>
+    
+    <home-title-minor id="description" class="row">...loading</home-title-minor>
+    
+    <h3 class="row">Paths</h3>
+    <stats-list id="paths" class="list-group-item">
+      .. there are no paths for {{slug}}, because it doesn't exist.
+    </stats-list>
+      
+    <stats-details-controls class="row">
+      <button id="show-details" class="btn btn-link">{{slug}} details</button>
+    </stats-details-controls>
+    
+    <nerdy-details id="nerdy-details" class="collapse">
+      <h3 class="row">Behavior</h3>
+      <stats-list id="stats" class="list-group">
+        .. there are no overall stats for {{slug}}, because it doesn't exist.
+      </stats-list>
+  
+      <h3 class="row">Process</h3>
+      <stats-list id="process" class="list-group">
+        .. there are no process stats for {{slug}}, because it doesn't exist.
+      </stats-list>
+  
+      <h3 class="row">Pool</h3>
+      <stats-list id="pool" class="list-group">
+        .. there are no pool stats for {{slug}}, because it doesn't exist.
+      </stats-list>
+    </nerdy-details>
+    
+  </body>
+
+  <script type="text/javascript">
+/* global $ */
+$(`home-title`).fadeOut()
+  .html(`{{slug}}`)
+  .fadeIn();
+
+$(`#back`).click(() => {
+  window.history.back();
+});
+
+$(`#show-details`)
+  .click(() => {
+    $(`#show-details`).hide();
+    $(`#nerdy-details`).fadeIn();
+  });
+  
+// Get stats
+// ---------
+$.ajax({
+  url: `${window.location.origin}/stats/{{slug}}`,
+  success: (data) => {
+    const { resource, protocol, maxLoad, config, process, pool } = data;
+    $(`#description`).html(config.description);
+
+    $(`#stats`).html(``);
+    $(`#pool`).html(``);
+    $(`#process`).html(``);
+    $(`#paths`).html(``);
+
+    $(`#paths`)
+      .append(
+        $(`<button/>`)
+          .addClass(`btn btn-success btn-space`)
+          .html(` / `)
+          .click(() => {
+            window.open(`${window.location.origin}/{{slug}}`, `_self`);
+          })
+      );
+
+    if(config.paths) {
+      config.paths.forEach((pathName) => {
+        $(`#paths`)
+          .append(
+            $(`<button/>`)
+              .addClass(`btn btn-info btn-space`)
+              .html(`/${pathName}`)
+              .click(() => {
+                window.open(`${window.location.origin}/{{slug}}/${pathName}`, `_self`);
+              })
+          );
+      });
+    }
+
+    Object.keys(process).forEach((key) => {
+      $(`#process`)
+        .append($(`<stat-item/>`)
+          .addClass(`list-group-item`)
+          .append(
+            $(`<h4/>`)
+              .addClass(`card-title`)
+              .html(key)
+          )
+          .append(
+            $(`<p/>`)
+              .addClass(`card-text`)
+              .html(process[key])
+          )
+        );
+    });
+
+    $(`#stats`)
+      .append(
+        $(`<stat-item/>`)
+          .addClass(`list-group-item`)
+          .append(
+            $(`<h4/>`)
+              .addClass(`card-title`)
+              .html(`protocol`)
+          )
+          .append(
+            $(`<p/>`)
+              .addClass(`card-text`)
+              .html(config.protocol)
+          ))
+      .append(
+        $(`<stat-item/>`)
+          .addClass(`list-group-item`)
+          .append(
+            $(`<h4/>`)
+              .addClass(`card-title`)
+              .html(`resource`)
+          )
+          .append(
+            $(`<p/>`)
+              .addClass(`card-text`)
+              .html(config.resource)
+          ))
+      .append(
+        $(`<stat-item/>`)
+          .addClass(`list-group-item`)
+          .append(
+            $(`<h4/>`)
+              .addClass(`card-title`)
+              .html(`maximum load`)
+          )
+          .append(
+            $(`<p/>`)
+              .addClass(`card-text`)
+              .html(maxLoad)
+          ));
+
+    Object.keys(pool).forEach((key) => {
+      $(`#pool`)
+        .append($(`<stat-item/>`)
+          .addClass(`list-group-item`)
+          .append(
+            $(`<h4/>`)
+              .addClass(`card-title`)
+              .html(key)
+          )
+          .append(
+            $(`<p/>`)
+              .addClass(`card-text`)
+              .html(pool[key])
+          )
+        );
+    });
+  }
+});
+
+  </script>
+</html>

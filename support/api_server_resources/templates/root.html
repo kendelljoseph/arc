@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{appName}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style type="text/css">
+      body {
+       background: #eee;
+       margin: 0;
+
+      }
+      .card {
+        margin: 5px;
+        cursor: pointer;
+      }
+      .card:hover {
+        border-color: #aaa;
+      }
+      .card-title {
+        margin: 10px;
+      }
+      .card .btn {
+        margin-top: 5px;
+      }
+      .badge {
+        margin-right: 5px;
+      }
+      
+      .story {
+        cursor: pointer;
+      }
+      
+      .story:hover {
+        border-color: #777;
+      }
+      
+      .unstarted {
+        background: #ddd;
+      }
+      
+      .started {
+        background: #f1eba1;
+      }
+      
+      .finished {
+        background: #f7b722;
+      }
+      
+      .delivered {
+        background: #abe2a8;
+      }
+      
+      .rejected {
+        background: #e49f9f;
+      }
+      
+      .soft-point {
+        color: #777;
+      }
+      
+      .labels {
+        justify-content: flex-end;
+        min-height: 10pt;
+      }
+      
+      story-label {
+        margin-left: 5px;
+        font-style: italic;
+        font-size: 8pt;
+      }
+      .pivotal-row {
+        display: flex;
+        flex-flow: column;
+      }
+      
+      p {
+        margin: 0;
+      }
+    </style>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </head>
+  <body class="container">
+    <arc-badges class="row">
+      <a class="btn-sm" href="{{githubRepo}}">repository</a>
+      <a class="btn-sm" href="{{wiki}}">wiki</a>
+      <a class="badge" href="{{travisBadgeUrl}}"><img src="{{travisBadgeImg}}" /></a>
+      <a class="badge" href="{{ccBadgeUrl}}"><img src="{{ccBadgeImg}}" /></a>
+      <a class="badge" href="{{ccCoverageBadgeUrl}}"><img src="{{ccCoverageBadgeImg}}" /></a>
+    </arc-badges>
+    <home-title class="row display-4">...loading</home-title>
+    
+    <h3 class="row">Stories</h3>
+    <pivotal-stories id="stories" style='row list-group'>
+        ... there are no stories being told about this
+    </pivotal-stories>
+    
+    <h3 class="row">Microservices</h3>
+    <home-stats id="all_microservices" class="row">
+      ... there are no microservices defined.
+    </home-stats>
+
+  </body>
+
+  <script type="text/javascript">
+/* global $, showdown*/
+$(`home-title`).fadeOut()
+  .html(`{{appName}}`)
+  .fadeIn();
+
+// Get stats
+// ---------
+$.ajax({
+  url: `${window.location.origin}/stats`,
+  success: (data) => {
+    const names = Object.keys(data);
+    if(!names.length) return;
+    $(`#all_microservices`).html(``);
+    names.forEach((microserviceName) => {
+      $(`#all_microservices`)
+        .append($(`<div/>`)
+          .addClass(`card list-group`)
+          .attr(`style`, `width: 22rem; height: auto;`)
+          .append($(`<h4/>`)
+            .addClass(`card-title `)
+            .html(microserviceName))
+          .append($(`<div/>`)
+            .addClass(`card-body`)
+            .append(
+              $(`<div/>`)
+                .addClass(`card-text `)
+                .html(data[microserviceName]))
+
+          ).click(() => {
+            window.open(`${window.location.origin}/view-stats/${microserviceName}`, `_self`);
+          })
+        );
+
+    });
+  }
+});
+
+function executeTrackerApiFetch() {
+  $.ajax({
+    url: `/stories`,
+  }).done(displayTrackerApiResponse);
+}
+
+var converter = new showdown.Converter();
+
+function displayTrackerApiResponse(stories) {
+  $(`#stories`).html(``);
+  $(`#stories`).append(stories.map((story) => {
+    return $(`<pivotal-stuff/>`)
+      .addClass(`story pivotal-row`)
+      .append($(`<pivotal-story/>`)
+        .attr(`data-toggle`, `collapse`)
+        .attr(`data-target`, `#story-${story.id}`)
+        .attr(`aria-expanded`, `false`)
+        .attr(`aria-controls`, `story-${story.id}`)
+        .attr(`title`, `${story.description ? converter.makeHtml(story.description) : ``}`)
+        .addClass(`list-group-item  d-flex justify-content-between align-items-center ${story.current_state}`)
+        .append($(`<story-name/>`)
+          .html(converter.makeHtml(story.name)))
+        .append($(`<story-estimate/>`)
+          .addClass(`soft-point`)
+          .html(`${story.estimate === undefined ? `` : `|`}`.repeat(story.estimate === undefined? 0 : story.estimate))
+        ))
+      .append($(`<story-labels/>`)
+        .addClass(`d-flex labels`)
+        .append(story.labels.map((label) => {
+          return $(`<story-label/>`)
+            .html(label.name);
+        })))
+      .append($(`<pivotal-description/>`)
+        .attr(`id`, `story-${story.id}`)
+        .addClass(`collapse justify-content-between align-items-center`)
+        .append(
+          $(`<button/>`)
+            .addClass(`btn btn-info btn-sm`)
+            .html(`view full story`)
+            .click(() => {
+              window.open(story.url, `_self`);
+            }))
+        .append(
+          $(`<div/>`).html(`${story.description ? converter.makeHtml(story.description) : ``}`))
+        
+      );
+      
+      
+  }));
+  $(`[data-toggle="tooltip"]`).tooltip();
+}
+
+executeTrackerApiFetch();
+
+  </script>
+</html>

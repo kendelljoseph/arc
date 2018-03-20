@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Arc | Api Server Resources</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="authentication.html">
+                  support/api_server_resources/authentication.js
+                </a>
+              
+                
+                <a class="source" href="check_api_options.html">
+                  support/api_server_resources/check_api_options.js
+                </a>
+              
+                
+                <a class="source" href="create_express_server.html">
+                  support/api_server_resources/create_express_server.js
+                </a>
+              
+                
+                <a class="source" href="find_microservice.html">
+                  support/api_server_resources/find_microservice.js
+                </a>
+              
+                
+                <a class="source" href="get_all_microservice_stats.html">
+                  support/api_server_resources/get_all_microservice_stats.js
+                </a>
+              
+                
+                <a class="source" href="get_microservice_data.html">
+                  support/api_server_resources/get_microservice_data.js
+                </a>
+              
+                
+                <a class="source" href="get_one_microservice_stats.html">
+                  support/api_server_resources/get_one_microservice_stats.js
+                </a>
+              
+                
+                <a class="source" href="listen_to_requests.html">
+                  support/api_server_resources/listen_to_requests.js
+                </a>
+              
+                
+                <a class="source" href="render_template.html">
+                  support/api_server_resources/render_template.js
+                </a>
+              
+                
+                <a class="source" href="usage_reporter.html">
+                  support/api_server_resources/usage_reporter.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="arc-api-server-resources">Arc | Api Server Resources</h1>
+<h3 id="authenticate-requests">Authenticate Requests</h3>
+<ul>
+<li>Arc can authenticate requests sent to the API server</li>
+</ul>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Arc adds <code>.env</code> variables to the process</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">require</span>(<span class="hljs-string">`dotenv`</span>).config();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Arc checks the request <code>headers</code> and responds when the API key is not authorized</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">{headers}, response, next</span>) =&gt;</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Arc gets the API key from the header of the request</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> apiKey = headers[<span class="hljs-string">`arc-api-key`</span>];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Arc checks if the API key matches the api key set in the <code>.env</code> file</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> arcApiKey    = process.env.ARC_API_KEY;
+  <span class="hljs-keyword">const</span> validRequest = apiKey === arcApiKey;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Arc <strong>skips authentication</strong> if there is no API key set in the <code>.env</code> file</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span>(!arcApiKey) <span class="hljs-keyword">return</span> next();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Arc rejects requests that do not have a valid API key</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span>(!validRequest) {
+    response.status(<span class="hljs-number">403</span>);
+    <span class="hljs-keyword">return</span> response.json({<span class="hljs-attr">error</span>: <span class="hljs-string">`unauthorized api key`</span>});
+  }
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

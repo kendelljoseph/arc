@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Arc | Api Server Resources</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="authentication.html">
+                  support/api_server_resources/authentication.js
+                </a>
+              
+                
+                <a class="source" href="check_api_options.html">
+                  support/api_server_resources/check_api_options.js
+                </a>
+              
+                
+                <a class="source" href="create_express_server.html">
+                  support/api_server_resources/create_express_server.js
+                </a>
+              
+                
+                <a class="source" href="find_microservice.html">
+                  support/api_server_resources/find_microservice.js
+                </a>
+              
+                
+                <a class="source" href="get_all_microservice_stats.html">
+                  support/api_server_resources/get_all_microservice_stats.js
+                </a>
+              
+                
+                <a class="source" href="get_microservice_data.html">
+                  support/api_server_resources/get_microservice_data.js
+                </a>
+              
+                
+                <a class="source" href="get_one_microservice_stats.html">
+                  support/api_server_resources/get_one_microservice_stats.js
+                </a>
+              
+                
+                <a class="source" href="listen_to_requests.html">
+                  support/api_server_resources/listen_to_requests.js
+                </a>
+              
+                
+                <a class="source" href="render_template.html">
+                  support/api_server_resources/render_template.js
+                </a>
+              
+                
+                <a class="source" href="usage_reporter.html">
+                  support/api_server_resources/usage_reporter.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="arc-api-server-resources">Arc | Api Server Resources</h1>
+<h3 id="create-express-server">Create Express Server</h3>
+<ul>
+<li>Arc creates an <a href="https://expressjs.com">Express</a> server that can communicate with microservices over HTTP</li>
+<li>The express server also shows <code>stats</code>, <code>stories</code> and microservice details</li>
+</ul>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Arc loads resources it needs to create and monitor an express server</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> {
+  express, http,
+  <span class="hljs-string">'body-parser'</span>: bodyParser,
+  <span class="hljs-string">'express-query-int'</span>: intParser,
+  <span class="hljs-string">'express-query-date'</span>: dateParser,
+  <span class="hljs-string">'express-query-boolean'</span>: booleanParser
+} = <span class="hljs-built_in">require</span>(<span class="hljs-string">`<span class="hljs-subst">${process.cwd()}</span>/dependencies`</span>);
+<span class="hljs-keyword">const</span> https = <span class="hljs-built_in">require</span>(<span class="hljs-string">`https`</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Arc loads the <code>package.json</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> packageJson             = <span class="hljs-built_in">require</span>(<span class="hljs-string">`<span class="hljs-subst">${process.cwd()}</span>/package.json`</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Arc loads resources for API authentication</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> authentication          = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./authentication`</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Arc loads resources for microservice usage</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> usageReporter           = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./usage_reporter`</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Arc loads resources for microservice stats reporting</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> getAllMicroserviceStats = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./get_all_microservice_stats`</span>);
+<span class="hljs-keyword">const</span> getOneMicroserviceStats = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./get_one_microservice_stats`</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Arc loads resources for communicating microservice data over HTTP</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> getMicroserviceData     = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./get_microservice_data`</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Arc loads resources for rendering HTML templates</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> renderTemplate          = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./render_template`</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <h4 id="express-server">Express Server</h4>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">{ microservices, paperboy }, { port, apiRootPath }</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =&gt;</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p><strong>Given</strong> Arc creates an express app to manage API HTTP traffic</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">const</span> app    = <span class="hljs-keyword">new</span> express();
+    <span class="hljs-keyword">const</span> server = http.createServer(app);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p><strong>When</strong> Arc configures the express app to support API data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    app.use(bodyParser.urlencoded({ <span class="hljs-attr">extended</span>: <span class="hljs-literal">false</span> }));
+    app.use(bodyParser.json());
+    app.use(booleanParser());
+    app.use(intParser());
+    app.use(dateParser());</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p><strong>Then</strong> Arc will monitor the HTTP traffic</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    app.use(usageReporter({paperboy, port}));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p><strong>And</strong> Arc will authenticate HTTP traffic</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    app.use(authentication);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <h4 id="api-routes">API Routes</h4>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>The API has a route to view microservice stats`</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    app.get(<span class="hljs-string">`/view-stats/:microserviceTitleSlug`</span>, (request, response) =&gt; {
+      <span class="hljs-keyword">const</span> { microserviceTitleSlug } = request.params;
+      renderTemplate(<span class="hljs-string">`view-stats.html`</span>, {<span class="hljs-attr">slug</span>: microserviceTitleSlug})
+        .then(<span class="hljs-function">(<span class="hljs-params">html</span>) =&gt;</span> {
+          response.send(html);
+        })
+        .catch(<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> {
+          response.send(error.message);
+        });
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>The API serves static files in the <code>/public</code> directory</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    app.use(<span class="hljs-string">`/`</span>, express.static(<span class="hljs-string">`<span class="hljs-subst">${__dirname}</span>/public`</span>));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>The API has a route to return user stories from <a href="https://www.pivotaltracker.com">pivotal tracker</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    app.use(<span class="hljs-string">`/stories`</span>, (request, response) =&gt; {
+      <span class="hljs-keyword">const</span> getStories = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+        <span class="hljs-keyword">const</span> token     = process.env.ARC_PIVOTAL_TOKEN;
+        <span class="hljs-keyword">const</span> projectId = process.env.ARC_PIVOTAL_PROJECT;
+        
+        <span class="hljs-keyword">let</span> path = <span class="hljs-string">`/services/v5/projects/<span class="hljs-subst">${projectId}</span>`</span>;
+        path += <span class="hljs-string">`/stories?filter=state:delivered,finished,rejected,started`</span>;
+        path += <span class="hljs-string">`,unstarted,unscheduled`</span>;
+        path += <span class="hljs-string">`&amp;limit=20`</span>;
+        <span class="hljs-keyword">const</span> options = {
+          path,
+          <span class="hljs-attr">hostname</span>: <span class="hljs-string">`www.pivotaltracker.com`</span>,
+          <span class="hljs-attr">method</span>: <span class="hljs-string">`GET`</span>,
+          <span class="hljs-attr">headers</span>: {
+            <span class="hljs-string">'X-TrackerToken'</span>: token
+          }
+        };
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+          https.get(options, (res) =&gt; {
+            <span class="hljs-keyword">let</span> data = <span class="hljs-string">``</span>;
+    
+            res.on(<span class="hljs-string">`data`</span>, (chunk) =&gt; data += chunk);
+            res.on(<span class="hljs-string">`end`</span>, () =&gt; resolve(<span class="hljs-built_in">JSON</span>.parse(data)));
+    
+          }).on(<span class="hljs-string">`error`</span>, reject);
+        });
+      };
+      
+      <span class="hljs-keyword">const</span> respond = <span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> {
+        response.send(data);
+      };
+      
+      getStories()
+        .then(respond)
+        .catch(respond);
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>The API has a route to get <code>all</code> microservice stats</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    app.get(<span class="hljs-string">`/stats`</span>, getAllMicroserviceStats({microservices}));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>The API has a route to get stats for a specific microservice</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    app.get(<span class="hljs-string">`/stats/:microserviceTitleSlug`</span>, getOneMicroserviceStats({microservices}));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>The API has a route to <strong>get data from a microservice</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    app.get(<span class="hljs-string">`<span class="hljs-subst">${apiRootPath || <span class="hljs-string">``</span>}</span>/:microservice/:path?`</span>, getMicroserviceData({paperboy, microservices}));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>The API has a route to show a <code>root</code> view</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    app.get(<span class="hljs-string">`/`</span>, (request, response) =&gt; {
+      renderTemplate(<span class="hljs-string">`root.html`</span>, {
+        <span class="hljs-attr">appName</span>           : process.env.ARC_APP_NAME || <span class="hljs-string">`Arc`</span>,
+        <span class="hljs-attr">githubRepo</span>        : process.env.ARC_GITHUB_REPO || <span class="hljs-string">`/`</span>,
+        <span class="hljs-attr">wiki</span>              : process.env.ARC_GITHUB_WIKI || <span class="hljs-string">`/`</span>,
+        <span class="hljs-attr">travisBadgeUrl</span>    : process.env.ARC_TRAVIS_BADGE_URL,
+        <span class="hljs-attr">travisBadgeImg</span>    : process.env.ARC_TRAVIS_BADGE_IMG_URL,
+        <span class="hljs-attr">ccBadgeUrl</span>        : process.env.ARC_CODECLIMATE_BADGE_URL,
+        <span class="hljs-attr">ccBadgeImg</span>        : process.env.ARC_CODECLIMATE_BADGE_IMG_URL,
+        <span class="hljs-attr">ccCoverageBadgeUrl</span>: process.env.ARC_CODECLIMATE_COVERAGE_BADGE_URL,
+        <span class="hljs-attr">ccCoverageBadgeImg</span>: process.env.ARC_CODECLIMATE_COVERAGE_BADGE_IMG_URL,
+        <span class="hljs-attr">pivotalToken</span>      : process.env.ARC_PIVOTAL_TOKEN,
+        <span class="hljs-attr">pivotalProject</span>    : process.env.ARC_PIVOTAL_PROJECT,
+        <span class="hljs-attr">packageInfo</span>: {
+          <span class="hljs-attr">name</span>   : packageJson.name,
+          <span class="hljs-attr">version</span>: packageJson.version,
+          <span class="hljs-attr">url</span>    : {
+            <span class="hljs-attr">milestones</span>: <span class="hljs-string">`https://docs.google.com/spreadsheets/d/1ilqpRmQ3VusuBfarcAol6VfgkF3njrbA8DgKnZ4T19c/edit?usp=sharing`</span>,
+            <span class="hljs-attr">bugs</span>      : packageJson.bugs.url,
+            <span class="hljs-attr">homepage</span>  : packageJson.homepage,
+            <span class="hljs-attr">wiki</span>      : <span class="hljs-string">`https://github.com/altereagle/arc/wiki`</span>,
+          }
+        }
+      })
+        .then(<span class="hljs-function">(<span class="hljs-params">html</span>) =&gt;</span> {
+          response.send(html);
+        })
+        .catch(<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> {
+          response.send(error.message);
+        });
+      
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Arc returns the express app, the server, and the port</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    resolve({app, server, port});
+  });
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

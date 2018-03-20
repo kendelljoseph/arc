@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Arc | Support</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="check_config.html">
+                  support/check_config.js
+                </a>
+              
+                
+                <a class="source" href="create_api_server.html">
+                  support/create_api_server.js
+                </a>
+              
+                
+                <a class="source" href="create_worker_pool.html">
+                  support/create_worker_pool.js
+                </a>
+              
+                
+                <a class="source" href="message_parser.html">
+                  support/message_parser.js
+                </a>
+              
+                
+                <a class="source" href="microservice_creator.html">
+                  support/microservice_creator.js
+                </a>
+              
+                
+                <a class="source" href="protocol_event_setter.html">
+                  support/protocol_event_setter.js
+                </a>
+              
+                
+                <a class="source" href="shutdown_microservices.html">
+                  support/shutdown_microservices.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="arc-support">Arc | Support</h1>
+<h3 id="message-parser">Message Parser</h3>
+<ul>
+<li>Parses incoming data from microservices sent via <code>process.send</code></li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">{paperboy}</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">microservices, {microservice, message}</span>) =&gt;</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Arc detrmines if the microservice has a config file matching known microservices</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">const</span> matchingConfig = microservices.find(<span class="hljs-function">(<span class="hljs-params">{title}</span>) =&gt;</span> {
+      <span class="hljs-keyword">return</span> title === microservice.title;
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h4 id="trigger-error-work-and-job-notifications">Trigger Error, Work, and Job notifications</h4>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Arc will trigger a notification for work errors</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(message &amp;&amp; message.__error) {
+      <span class="hljs-keyword">return</span> paperboy.trigger(<span class="hljs-string">`@error`</span>, <span class="hljs-built_in">JSON</span>.stringify({<span class="hljs-attr">title</span>: microservice.title, <span class="hljs-attr">metrics</span>: message.__error, <span class="hljs-attr">pid</span>: process.pid}));
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Arc will trigger a notification for work metrics</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(message &amp;&amp; message.__metrics) {
+      <span class="hljs-keyword">return</span> paperboy.trigger(<span class="hljs-string">`@work`</span>, <span class="hljs-built_in">JSON</span>.stringify({<span class="hljs-attr">title</span>: microservice.title, <span class="hljs-attr">metrics</span>: message.__metrics, <span class="hljs-attr">pid</span>: process.pid}));
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Arc will trigger a notification for job metrics</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(message &amp;&amp; message.__job) {
+      <span class="hljs-keyword">return</span> paperboy.trigger(<span class="hljs-string">`@job`</span>, <span class="hljs-built_in">JSON</span>.stringify({<span class="hljs-attr">title</span>: microservice.title, <span class="hljs-attr">metrics</span>: message.__job, <span class="hljs-attr">pid</span>: process.pid}));
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <h4 id="trigger-protocol-based-notification">Trigger Protocol Based Notification</h4>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Arc will not respond if the message is empty</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(message.constructor === <span class="hljs-built_in">Object</span> &amp;&amp; <span class="hljs-built_in">Object</span>.keys(message).length === <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Arc will convert the message to a <code>string</code> if it is not already</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">const</span> responseMessage = <span class="hljs-keyword">typeof</span> message === <span class="hljs-string">`string`</span> ? message : <span class="hljs-built_in">JSON</span>.stringify(message);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Arc will trigger a notification with the message using the <code>protocol</code> if the microservice has a config that matches known microservices</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(matchingConfig) {
+      <span class="hljs-keyword">const</span> { config } = matchingConfig;
+      paperboy.trigger(<span class="hljs-string">`<span class="hljs-subst">${config.protocol}</span><span class="hljs-subst">${microservice.title}</span>`</span>, responseMessage);
+    }
+
+  };
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
