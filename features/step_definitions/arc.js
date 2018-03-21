@@ -20,6 +20,12 @@ Given(/^arc has a step called (.*)$/, function(stepName, done){
   done();
 });
 
+Given(/^arc has a property called (.*)$/, function(methodName, done){
+  expect(this.arc).to.exist;
+  expect(this.arc[methodName]).to.exist;
+  done();
+});
+
 Then(/^arc shuts down microservices$/, function(){
   expect(this.arc).to.exist;
   expect(this.arc.shutdownMicroservices).to.exist;

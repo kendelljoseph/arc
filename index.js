@@ -18,7 +18,6 @@ process.title = `@/_arc-${process.title}`;
 // Arc loads support modules
 const checkConfig         = require(`./support/check_config`);
 const messageParser       = require(`./support/message_parser`)({paperboy});
-const createApiServer     = require(`./support/create_api_server`)({paperboy});
 const createWorkerPool    = require(`./support/create_worker_pool`)({paperboy});
 const createMicroservices = require(`./support/microservice_creator`);
 const setProtocolEvents   = require(`./support/protocol_event_setter`)({paperboy});
@@ -39,7 +38,7 @@ const workerPool = (options) => createWorkerPool(parseMessage, options);
 const shutdownMicroservices = require(`./support/shutdown_microservices`)({paperboy});
 
 // #### Arc can create pools of microservices
-module.exports = (configs = require(`${process.cwd()}/config`), apiOptions = {}) => {
+module.exports = (configs = require(`${process.cwd()}/config`)) => {
   return new Promise((resolve, reject) => {
     void async function(){
       try {
@@ -51,10 +50,14 @@ module.exports = (configs = require(`${process.cwd()}/config`), apiOptions = {})
         
         // **And** Arc sets the intersystem communication events for microservies it created
         await setProtocolEvents(allMicroservices);
-        
-        // **And** Arc reates an API server that can communicate with microservices
-        await createApiServer({microservices: allMicroservices, options: apiOptions});
 
+        // **And* Arc waits for extensions to do their thing
+        await Promise.all(module.exports._extensions.map(({extension, options}) => {
+          return new Promise((resolve) => {
+            resolve(extension({paperboy, microservices: allMicroservices, options}));
+          });
+        }));
+        
         // **And** Arc uses paperboy to let the system know about microservices that are online
         allMicroservices.forEach((microservice) => {
           paperboy.trigger(`@health`, JSON.stringify({
@@ -84,3 +87,10 @@ module.exports._steps = {
 
 // Arc can shutdown the microservices it created
 module.exports.shutdownMicroservices = () => shutdownMicroservices(getAllMicroservices());
+
+// Arc can be extended
+module.exports._extensions = [];
+module.exports.addExtension = (extension, options = {}) => {
+  if(typeof extension != `function`) throw Error(`Arc extension must be a function or a promise`);
+  module.exports._extensions.push({extension, options});
+};
