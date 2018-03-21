@@ -1,6 +1,7 @@
 # Arc
 [![Build Status](https://travis-ci.org/altereagle/arc.svg?branch=master)](https://travis-ci.org/altereagle/arc)
 [![Maintainability](https://api.codeclimate.com/v1/badges/250cba5c85e88cec6dfb/maintainability)](https://codeclimate.com/github/altereagle/arc/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/250cba5c85e88cec6dfb/test_coverage)](https://codeclimate.com/github/altereagle/arc/test_coverage)
 
 A microservice framework
 
