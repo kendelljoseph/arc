@@ -1,12 +1,12 @@
 {
   "name": "arcms",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "A Microservice Framework",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/cucumber-js",
     "start": "node index.js",
-    "coverage-test": "nyc --reporter=lcov --reporter=text-lcov cucumberjs -r features/",
+    "coverage-test": "nyc --reporter=lcov --reporter=text-lcov cucumber-js -r features/",
     "coverage-report": "nyc --reporter=lcov --reporter=text-lcov npm test"
   },
   "repository": {
