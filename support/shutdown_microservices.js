@@ -19,13 +19,14 @@ module.exports = ({paperboy}) => {
 
           // **Given** Arc can run a recursive process death until all are destroyed -- **Muahahaha!**
           const destroyNext = () => {
+            if(totalDestroyed === count) return;
             pool.acquire()
               .then((microservice) => {
                 return pool.destroy(microservice);
               })
               .then(() => {
                 totalDestroyed++;
-                if(totalDestroyed === count) resolve();
+                if(totalDestroyed === count) return resolve();
                 destroyNext();
               })
               .catch(reject);

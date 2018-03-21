@@ -10,7 +10,7 @@ const Paperboy = require(`paperboy-communicator`);
 let paperboy;
 
 // Arc can exits the microservice as cleanly as possible
-const cleanExit = () => { process.exit(); };
+const cleanExit = () => process.exit(0);
 process.on(`SIGINT`, cleanExit);
 process.on(`SIGTERM`, cleanExit);
 
