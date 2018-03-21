@@ -1,6 +1,6 @@
 {
   "name": "arcms",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "A Microservice Framework",
   "main": "index.js",
   "scripts": {
@@ -34,7 +34,7 @@
     "generic-pool": "^3.4.2",
     "morgan": "^1.9.0",
     "mustache": "^2.3.0",
-    "paperboy-communicator": "^1.0.1",
+    "paperboy-communicator": "^1.0.2",
     "slug": "^0.9.1",
     "tdigest": "^0.1.1",
     "user-agent-parser": "^0.6.0"
