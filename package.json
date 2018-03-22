@@ -1,6 +1,6 @@
 {
   "name": "arcms",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "A Microservice Framework",
   "main": "index.js",
   "scripts": {

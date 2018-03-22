@@ -5,16 +5,20 @@
 
 A Node Microservice Framework
 
-
 ![gif](https://media.giphy.com/media/kFyLfPH7FU7zW/giphy.gif)
 
-## Install
+### Install
 ```bash
 npm install arcms
 ```
 
+### Info
 * Arc can run a module as a microservice.
 * Arc allows modules to communicate to each other using Redis
 * For more information on how to create a microservice, check the [wiki](https://github.com/altereagle/arc/wiki)
 * For information on how to extend Arc, check the [wiki](https://github.com/altereagle/arc/wiki)
 * Arc uses [paperboy](https://www.npmjs.com/package/paperboy-communicator) and thus requires [redis](https://redis.io/) to operate
+
+
+### Development
+* [Stories](https://www.pivotaltracker.com/n/projects/2148007)
