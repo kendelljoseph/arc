@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Arc</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="arc">Arc</h1>
+<h3 id="a-microservice-manager">A microservice manager</h3>
+<p><img src="https://media.giphy.com/media/kFyLfPH7FU7zW/giphy.gif" alt="gif"></p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Arc loads node modules it depends to operate</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> { dotenv } = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./dependencies`</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Arc adds the <code>.env file</code> variables to the process</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>dotenv.config();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Arc loads paperboy for intersystem communication</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> Paperboy = <span class="hljs-built_in">require</span>(<span class="hljs-string">`paperboy-communicator`</span>);
+<span class="hljs-keyword">const</span> paperboy = <span class="hljs-keyword">new</span> Paperboy({<span class="hljs-attr">connectionName</span>: <span class="hljs-string">`arc`</span>});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Arc updates the process title</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>process.title = <span class="hljs-string">`@/_arc-<span class="hljs-subst">${process.title}</span>`</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Arc loads support modules</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> checkConfig         = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/check_config`</span>);
+<span class="hljs-keyword">const</span> messageParser       = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/message_parser`</span>)({paperboy});
+<span class="hljs-keyword">const</span> createWorkerPool    = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/create_worker_pool`</span>)({paperboy});
+<span class="hljs-keyword">const</span> createMicroservices = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/microservice_creator`</span>);
+<span class="hljs-keyword">const</span> setProtocolEvents   = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/protocol_event_setter`</span>)({paperboy});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Arc creates a global variable to store a reference to microservices</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">let</span> allMicroservices = {};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Arc can use a global function to get all microservices</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> getAllMicroservices = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> allMicroservices;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Arc can parse messages using the message parser support module</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> parseMessage = <span class="hljs-function">(<span class="hljs-params">options</span>) =&gt;</span> messageParser(getAllMicroservices(), options);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Arc can create a microservice worker pool</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> workerPool = <span class="hljs-function">(<span class="hljs-params">options</span>) =&gt;</span> createWorkerPool(parseMessage, options);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Arc can shutdown microservices</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> shutdownMicroservices = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/shutdown_microservices`</span>)({paperboy});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <h4 id="arc-can-create-pools-of-microservices">Arc can create pools of microservices</h4>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">configs = <span class="hljs-built_in">require</span>(<span class="hljs-string">`<span class="hljs-subst">${process.cwd()}</span>/config`</span></span>)) =&gt;</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+    <span class="hljs-keyword">void</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+      <span class="hljs-keyword">try</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p><strong>Given</strong> Arc checks the config file to see if it has any errors</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">const</span> parsedConfigs = <span class="hljs-keyword">await</span> checkConfig(configs);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p><strong>And</strong> Arc creates microservices</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        allMicroservices    = <span class="hljs-keyword">await</span> createMicroservices(workerPool, parsedConfigs);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p><strong>And</strong> Arc sets the intersystem communication events for microservies it created</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">await</span> setProtocolEvents(allMicroservices);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>*<em>And</em> Arc waits for extensions to do their thing</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">await</span> <span class="hljs-built_in">Promise</span>.all(<span class="hljs-built_in">module</span>.exports._extensions.map(<span class="hljs-function">(<span class="hljs-params">{extension, options}</span>) =&gt;</span> {
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =&gt;</span> {
+            resolve(extension({paperboy, <span class="hljs-attr">microservices</span>: allMicroservices, options}));
+          });
+        }));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p><strong>And</strong> Arc uses paperboy to let the system know about microservices that are online</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        allMicroservices.forEach(<span class="hljs-function">(<span class="hljs-params">microservice</span>) =&gt;</span> {
+          paperboy.trigger(<span class="hljs-string">`@health`</span>, <span class="hljs-built_in">JSON</span>.stringify({
+            <span class="hljs-attr">title</span>: microservice.title,
+            <span class="hljs-attr">metrics</span>: {<span class="hljs-attr">status</span>: <span class="hljs-string">`online`</span>},
+            <span class="hljs-attr">pid</span>: process.pid
+          }));
+        });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p><strong>Then</strong> Arc returns the microservices it created</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        resolve(allMicroservices);
+      } <span class="hljs-keyword">catch</span> (error) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p><strong>But</strong> Arc returns an error message when something goes wrong</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        reject(error);
+      }
+    }();
+  });
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Arc adds the steps it uses to the exported module </p>
+<blockquote>
+<p>this is only for testing what Arc can do</p>
+</blockquote>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports._steps = {
+  checkConfig, parseMessage, workerPool,
+  createMicroservices, setProtocolEvents, getAllMicroservices
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Arc can shutdown the microservices it created</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports.shutdownMicroservices = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> shutdownMicroservices(getAllMicroservices());</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Arc can be extended</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports._extensions = [];
+<span class="hljs-built_in">module</span>.exports.addExtension = <span class="hljs-function">(<span class="hljs-params">extension, options = {}</span>) =&gt;</span> {
+  <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> extension != <span class="hljs-string">`function`</span>) <span class="hljs-keyword">throw</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">`Arc extension must be a function or a promise`</span>);
+  <span class="hljs-built_in">module</span>.exports._extensions.push({extension, options});
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
