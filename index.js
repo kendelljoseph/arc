@@ -16,7 +16,7 @@ const paperboy = new Paperboy({connectionName: `arc`});
 process.title = `@/_arc-${process.title}`;
 
 // Arc loads support modules
-const checkConfig         = require(`./support/check_config`);
+const checkManifest       = require(`./support/check_manifest`);
 const messageParser       = require(`./support/message_parser`)({paperboy});
 const createWorkerPool    = require(`./support/create_worker_pool`)({paperboy});
 const createMicroservices = require(`./support/microservice_creator`);
@@ -38,15 +38,15 @@ const workerPool = (options) => createWorkerPool(parseMessage, options);
 const shutdownMicroservices = require(`./support/shutdown_microservices`)({paperboy});
 
 // #### Arc can create pools of microservices
-module.exports = (configs = require(`${process.cwd()}/config`)) => {
+module.exports = (microserviceManifest = require(`${process.cwd()}/microservice.manifest.js`)) => {
   return new Promise((resolve, reject) => {
     void async function(){
       try {
-        // **Given** Arc checks the config file to see if it has any errors
-        const parsedConfigs = await checkConfig(configs);
+        // **Given** Arc checks the manifest file to see if it has any errors
+        const parsedManifest = await checkManifest(microserviceManifest);
         
         // **And** Arc creates microservices
-        allMicroservices    = await createMicroservices(workerPool, parsedConfigs);
+        allMicroservices    = await createMicroservices(workerPool, parsedManifest);
         
         // **And** Arc sets the intersystem communication events for microservies it created
         await setProtocolEvents(allMicroservices);
@@ -81,7 +81,7 @@ module.exports = (configs = require(`${process.cwd()}/config`)) => {
 // Arc adds the steps it uses to the exported module 
 // > this is only for testing what Arc can do
 module.exports._steps = {
-  checkConfig, parseMessage, workerPool,
+  checkManifest, parseMessage, workerPool,
   createMicroservices, setProtocolEvents, getAllMicroservices
 };
 

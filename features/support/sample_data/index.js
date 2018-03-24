@@ -5,7 +5,7 @@ module.exports = {
     'test path data'    : `get/path`,
     'test settings data': `custom-settings`
   },
-  config: {
+  microserviceManifest: {
     'Test Microservice': {
       protocol      : `test://`,
       paths         : [
@@ -18,7 +18,7 @@ module.exports = {
         `cache/custom/get`,
       ],
       resource      : `sample_microservice`,
-      resourceFolder: `features/support/sample_data/`,
+      resourceFolder: `features/support/sample_data`,
       description   : `A microservice for testing`,
       count         : 2,
       maxWorkTime   : 10000,

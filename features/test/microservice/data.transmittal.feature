@@ -2,7 +2,7 @@ Feature: Microservices
 
   Scenario: A system has a microservice
     Given arc is ready
-      And a system is using a microservice config named Test Microservice
+      And a system is using a microservice manifest named Test Microservice
       And paperboy is ready
     When a system loads microservices using arc
       And paperboy listens to Test Microservice and sends test data to the root protocol

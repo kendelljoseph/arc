@@ -20,13 +20,8 @@
             <div id="jump_page">
               
                 
-                <a class="source" href="check_config.html">
-                  support/check_config.js
-                </a>
-              
-                
-                <a class="source" href="create_api_server.html">
-                  support/create_api_server.js
+                <a class="source" href="check_manifest.html">
+                  support/check_manifest.js
                 </a>
               
                 
@@ -70,14 +65,14 @@
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
               <h1 id="arc-support">Arc | Support</h1>
-<h3 id="check-config">Check Config</h3>
+<h3 id="check-manifest">Check Manifest</h3>
 <ul>
-<li>Arc can check the microservice configuration object</li>
+<li>Arc can check the microservice manifest object</li>
 </ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">config</span>) =&gt;</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">manifest</span>) =&gt;</span> {</pre></div></div>
             
         </li>
         
@@ -103,11 +98,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p><strong>Then</strong> the config check will return the config</p>
+              <p><strong>Then</strong> the manifest check will return the manifest</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    resolve(config);
+            <div class="content"><div class='highlight'><pre>    resolve(manifest);
   });
 };</pre></div></div>
             

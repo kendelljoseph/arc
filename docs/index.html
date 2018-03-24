@@ -101,7 +101,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> checkConfig         = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/check_config`</span>);
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> checkManifest       = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/check_manifest`</span>);
 <span class="hljs-keyword">const</span> messageParser       = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/message_parser`</span>)({paperboy});
 <span class="hljs-keyword">const</span> createWorkerPool    = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/create_worker_pool`</span>)({paperboy});
 <span class="hljs-keyword">const</span> createMicroservices = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/microservice_creator`</span>);
@@ -195,7 +195,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">configs = <span class="hljs-built_in">require</span>(<span class="hljs-string">`<span class="hljs-subst">${process.cwd()}</span>/config`</span></span>)) =&gt;</span> {
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">microserviceManifest = <span class="hljs-built_in">require</span>(<span class="hljs-string">`<span class="hljs-subst">${process.cwd()}</span>/microservice.manifest.js`</span></span>)) =&gt;</span> {
   <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
     <span class="hljs-keyword">void</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
       <span class="hljs-keyword">try</span> {</pre></div></div>
@@ -209,11 +209,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p><strong>Given</strong> Arc checks the config file to see if it has any errors</p>
+              <p><strong>Given</strong> Arc checks the manifest file to see if it has any errors</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">const</span> parsedConfigs = <span class="hljs-keyword">await</span> checkConfig(configs);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">const</span> parsedManifest = <span class="hljs-keyword">await</span> checkManifest(microserviceManifest);</pre></div></div>
             
         </li>
         
@@ -228,7 +228,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        allMicroservices    = <span class="hljs-keyword">await</span> createMicroservices(workerPool, parsedConfigs);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        allMicroservices    = <span class="hljs-keyword">await</span> createMicroservices(workerPool, parsedManifest);</pre></div></div>
             
         </li>
         
@@ -337,7 +337,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports._steps = {
-  checkConfig, parseMessage, workerPool,
+  checkManifest, parseMessage, workerPool,
   createMicroservices, setProtocolEvents, getAllMicroservices
 };</pre></div></div>
             

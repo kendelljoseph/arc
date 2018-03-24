@@ -76,12 +76,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Arc loads paperboy</p>
+              <p>Arc loads fs</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> Paperboy = <span class="hljs-built_in">require</span>(<span class="hljs-string">`<span class="hljs-subst">${process.cwd()}</span>/library/paperboy`</span>);
-<span class="hljs-keyword">let</span> paperboy;</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">`fs`</span>);</pre></div></div>
             
         </li>
         
@@ -92,13 +91,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Arc can exits the microservice as cleanly as possible</p>
+              <p>Arc loads paperboy</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> cleanExit = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> { process.exit(); };
-process.on(<span class="hljs-string">`SIGINT`</span>, cleanExit);
-process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> Paperboy = <span class="hljs-built_in">require</span>(<span class="hljs-string">`paperboy-communicator`</span>);
+<span class="hljs-keyword">let</span> paperboy;</pre></div></div>
             
         </li>
         
@@ -108,6 +106,24 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Arc can exits the microservice as cleanly as possible</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> cleanExit = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> process.exit(<span class="hljs-number">0</span>); 
+
+process.on(<span class="hljs-string">`SIGINT`</span>, cleanExit);
+process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>Arc monitors process metrics locally</p>
 
@@ -125,11 +141,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-6">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>Arc has a place to store the <code>work</code> and <code>settings</code> for the microservice process</p>
 
@@ -141,11 +157,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-7">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Arc can set the title and work for the microservice process</p>
 
@@ -153,27 +169,13 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
             
             <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> setTitleAndWork = <span class="hljs-function">(<span class="hljs-params">[title, workName, resourceFolder]</span>) =&gt;</span> {
   process.title       = <span class="hljs-string">`@/<span class="hljs-subst">${title}</span>`</span>;
-  work                = <span class="hljs-built_in">require</span>(<span class="hljs-string">`<span class="hljs-subst">${process.cwd()}</span>/<span class="hljs-subst">${resourceFolder}</span>/<span class="hljs-subst">${workName}</span>`</span>);
+  <span class="hljs-keyword">const</span> workPath = <span class="hljs-string">`<span class="hljs-subst">${process.cwd()}</span>/<span class="hljs-subst">${resourceFolder}</span>/<span class="hljs-subst">${workName}</span>`</span>;
   paperboy            = <span class="hljs-keyword">new</span> Paperboy({<span class="hljs-attr">connectionName</span>: <span class="hljs-string">`<span class="hljs-subst">${title}</span>`</span>});
-  paperboy._cacheName = <span class="hljs-string">`cache://<span class="hljs-subst">${title}</span>`</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <ul>
-<li>Arc notifies the master process that the title and work for this process is set</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  process.send(<span class="hljs-string">`*setup://title/work/set`</span>);
-};</pre></div></div>
+  paperboy._cacheName = <span class="hljs-string">`cache://<span class="hljs-subst">${title}</span>`</span>;
+  
+  <span class="hljs-keyword">try</span> {
+    fs.accessSync(workPath, fs.constants.R_OK | fs.constants.W_OK);
+    work                = <span class="hljs-built_in">require</span>(workPath);</pre></div></div>
             
         </li>
         
@@ -183,6 +185,61 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <ul>
+<li>Arc notifies the master process that the title and work for this process is set</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    process.send(<span class="hljs-string">`*setup://title/work/set`</span>);
+  } <span class="hljs-keyword">catch</span> (err) {
+    <span class="hljs-built_in">console</span>.error(<span class="hljs-string">`<span class="hljs-subst">${workPath}</span> - does not exist! Create a resource for this microservice!`</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <ul>
+<li>Arc sets default work for microservices without defined resources</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    work = <span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> <span class="hljs-string">`You need to create a resource for this microservice here - <span class="hljs-subst">${workPath}</span>`</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <ul>
+<li>Arc notifies the master process that the work for this process failed to set</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    process.send(<span class="hljs-string">`*setup://title/work/set`</span>);
+  }
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>Arc can set the settings for the microservice process</p>
 
@@ -194,11 +251,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-10">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <ul>
 <li>Arc notifies the master process that the settings for this process is set</li>
@@ -212,11 +269,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-11">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Arc can start a job for the microservice process</p>
 
@@ -227,11 +284,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-12">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Arc increments job metrics when a job is started</p>
 
@@ -250,11 +307,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-13">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>Arc can do the job</p>
 
@@ -265,11 +322,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-14">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <ul>
 <li>Arc does the work using the data for the job</li>
@@ -283,11 +340,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-15">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Arc can end the job</p>
 
@@ -299,11 +356,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-16">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <ul>
 <li>Arc caches the result</li>
@@ -317,11 +374,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-17">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <ul>
 <li>Arc notifies the master process when there is an error caching the result</li>
@@ -341,11 +398,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-18">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <ul>
 <li>Arc sends the result or errors to the master process</li>
@@ -358,11 +415,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-19">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <ul>
 <li>Arc sends the metrics to the master process</li>
@@ -379,11 +436,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-20">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>This process can get or set cached data</p>
 
@@ -395,11 +452,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-21">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Arc checks if the key and the value exist</p>
 
@@ -413,11 +470,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-22">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Arc sets the cache key</p>
 
@@ -430,11 +487,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-23">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>Arc caches the data using <code>Paperboy</code> if the cache method is used for saving data</p>
 
@@ -451,11 +508,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-24">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>Arc gets cached data using <code>Paperboy</code> if the cache method is used for retrieving data</p>
 
@@ -470,11 +527,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-25">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>Arc saves a record of remaining job and round counts</p>
 
@@ -486,11 +543,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-26">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>Arc loads requirements for calculating percentiles</p>
 
@@ -501,11 +558,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-27">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>Arc can get the job medians</p>
 
@@ -522,11 +579,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-28">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <h4 id="process-message-handling">Process Message Handling</h4>
 
@@ -537,11 +594,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-29">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p><strong>Given</strong> Arc sets the work this process will do</p>
 
@@ -561,11 +618,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-30">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p><strong>And</strong> Arc sets the settings for this process</p>
 
@@ -584,11 +641,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-31">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p><strong>And</strong> Arc will skip doing work if there is no work to do</p>
 
@@ -599,11 +656,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-32">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p><strong>When</strong> the process notifies the master process that the it is starting the job</p>
 
@@ -624,11 +681,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-33">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p><strong>And</strong> the process starts the job</p>
 
@@ -639,11 +696,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-34">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p><strong>Then</strong> the process does the work</p>
 
@@ -654,11 +711,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-35">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p><strong>And</strong> the process ends the job</p>
 
@@ -669,11 +726,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-36">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p><strong>And</strong> the process notifies the master process when the job is done</p>
 
@@ -690,11 +747,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-37">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p><strong>But</strong> the process ends the job sending the errors when they are caught</p>
 

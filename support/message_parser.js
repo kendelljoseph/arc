@@ -3,8 +3,8 @@
 // - Parses incoming data from microservices sent via `process.send`
 module.exports = ({paperboy}) => {
   return (microservices, {microservice, message}) => {
-    // Arc detrmines if the microservice has a config file matching known microservices
-    const matchingConfig = microservices.find(({title}) => {
+    // Arc detrmines if the microservice has a manifest file matching known microservices
+    const matchingManifest = microservices.find(({title}) => {
       return title === microservice.title;
     });
 
@@ -33,10 +33,10 @@ module.exports = ({paperboy}) => {
     // Arc will convert the message to a `string` if it is not already
     const responseMessage = typeof message === `string` ? message : JSON.stringify(message);
 
-    // Arc will trigger a notification with the message using the `protocol` if the microservice has a config that matches known microservices
-    if(matchingConfig) {
-      const { config } = matchingConfig;
-      paperboy.trigger(`${config.protocol}${microservice.title}`, responseMessage);
+    // Arc will trigger a notification with the message using the `protocol` if the microservice has a manifest that matches known microservices
+    if(matchingManifest) {
+      const { manifest } = matchingManifest;
+      paperboy.trigger(`${manifest.protocol}${microservice.title}`, responseMessage);
     }
 
   };

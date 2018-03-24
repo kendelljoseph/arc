@@ -12,9 +12,9 @@ module.exports = ({paperboy}) => {
       // Arc rejects shutdown requests when there are no microservices to shut down
       if(!microservices.length) return rejectFailure(new Error(`Arc has no microservices to shut down!`));
       
-      const promises = microservices.map(({config, pool}) => {
+      const promises = microservices.map(({manifest, pool}) => {
         return new Promise((resolve, reject) => {
-          const count        = config.count;
+          const count        = manifest.count;
           let totalDestroyed = 0;
 
           // **Given** Arc can run a recursive process death until all are destroyed -- **Muahahaha!**

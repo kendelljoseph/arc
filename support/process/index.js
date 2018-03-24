@@ -5,12 +5,16 @@
 // Arc sets the microservice process title
 process.title = `@/unkown-microservice`;
 
+// Arc loads fs
+const fs = require(`fs`);
+
 // Arc loads paperboy
 const Paperboy = require(`paperboy-communicator`);
 let paperboy;
 
 // Arc can exits the microservice as cleanly as possible
-const cleanExit = () => process.exit(0);
+const cleanExit = () => process.exit(0); 
+
 process.on(`SIGINT`, cleanExit);
 process.on(`SIGTERM`, cleanExit);
 
@@ -31,12 +35,24 @@ let settings = null;
 // Arc can set the title and work for the microservice process
 const setTitleAndWork = ([title, workName, resourceFolder]) => {
   process.title       = `@/${title}`;
-  work                = require(`${process.cwd()}/${resourceFolder}/${workName}`);
+  const workPath = `${process.cwd()}/${resourceFolder}/${workName}`;
   paperboy            = new Paperboy({connectionName: `${title}`});
   paperboy._cacheName = `cache://${title}`;
   
-  // - Arc notifies the master process that the title and work for this process is set
-  process.send(`*setup://title/work/set`);
+  try {
+    fs.accessSync(workPath, fs.constants.R_OK | fs.constants.W_OK);
+    work                = require(workPath);
+    // - Arc notifies the master process that the title and work for this process is set
+    process.send(`*setup://title/work/set`);
+  } catch (err) {
+    console.error(`${workPath} - does not exist! Create a resource for this microservice!`);
+    
+    // - Arc sets default work for microservices without defined resources
+    work = (data) => `You need to create a resource for this microservice here - ${workPath}`;
+    
+    // - Arc notifies the master process that the work for this process failed to set
+    process.send(`*setup://title/work/set`);
+  }
 };
 
 // Arc can set the settings for the microservice process

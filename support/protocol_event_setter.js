@@ -6,7 +6,7 @@
 module.exports = ({paperboy}) => {
   return (microservices) => {
     return new Promise((resolve) => {
-      microservices.forEach(({pool, config, title}) => {
+      microservices.forEach(({pool, manifest, title}) => {
         // **When** Arc has a method to enable listening for events by a `protocol event name`
         const listenToEvents = (protocolEventName, path) => {
           
@@ -37,7 +37,7 @@ module.exports = ({paperboy}) => {
                 microservice.process.on(`message`, releaseListener);
                 
                 // The microservice will send the `path`, the `protocol` and the `data` to the process
-                microservice.process.send({path: path || null, protocol: config.protocol, data});
+                microservice.process.send({path: path || null, protocol: manifest.protocol, data});
               })
               
               // Arc will trigger an error notification if there was a problem acquiring the microservice
@@ -61,17 +61,17 @@ module.exports = ({paperboy}) => {
         // #### Listen to events using the protocol
         
         // Arc will listen to `root` protocol events for this microservice `ex: my-service://`
-        listenToEvents(config.protocol);
+        listenToEvents(manifest.protocol);
 
         // Arc will Listen to protocol events with `paths` for this microservice `ex: my-service://some-path`
-        if(config.paths && config.paths.length) {
-          config.paths.forEach((path) => {
+        if(manifest.paths && manifest.paths.length) {
+          manifest.paths.forEach((path) => {
             if((typeof path) != `string`) return;
             paperboy.trigger(`@health`, JSON.stringify({
               title: title,
               metrics: {addedPath: path},
               pid: process.pid}));
-            listenToEvents(`${config.protocol}${path}`, path);
+            listenToEvents(`${manifest.protocol}${path}`, path);
           });
         }
       });

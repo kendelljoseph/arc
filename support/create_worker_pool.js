@@ -9,33 +9,33 @@ const { 'generic-pool': genericPool } = require(`../dependencies`);
 
 // Arc creates a microservice worker pool
 module.exports = ({paperboy}) => {
-  return (parseMessage, {title, config}) => {
+  return (parseMessage, {title, manifest}) => {
     // #### Microservice Pool Configuration
     const {
-      // * Arc gets the resource to use from the configuration
+      // * Arc gets the resource to use from the manifest
       resource,
       
-      // * Arc gets the max load from the configuration
+      // * Arc gets the max load from the manifest
       maxLoad        = 1,
       
-      // * Arc gets the resource folder to use from the configuration
+      // * Arc gets the resource folder to use from the manifest
       resourceFolder = `microservice`,
       
-      // * Arc gets the initial process count from the configuration
+      // * Arc gets the initial process count from the manifest
       count          = 1,
       
-      // * Arc gets the initial starting state from the configuration
+      // * Arc gets the initial starting state from the manifest
       startOnline    = false,
       
-      // * Arc gets the protocol to use from the configuration
+      // * Arc gets the protocol to use from the manifest
       protocol       = `unknown://`,
       
-      // * Arc gets the description from the configuration
+      // * Arc gets the description from the manifest
       description    = `describe what this does`,
       
-      // * Arc gets the settings to pass to the microservice pool from the configuration
+      // * Arc gets the settings to pass to the microservice pool from the manifest
       settings
-    } = config;
+    } = manifest;
 
     return genericPool.createPool({
       // #### Microservice Creation
@@ -60,7 +60,7 @@ module.exports = ({paperboy}) => {
             pid: microservice.process.pid
           }, pid: process.pid}));
 
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
           // Arc sets local variables indicating the `resource` and `settings` have been set for the microservice
           let resourceSet = false;
           let settingsSet = settings != undefined ? false : true;
@@ -72,7 +72,7 @@ module.exports = ({paperboy}) => {
             // **Given** Arc listens for setup oriented events indicating the `resource` and `settings` are set for the microservice
             if(message === `*setup://title/work/set`) resourceSet = true;
             if(message === `*setup://settings/set`)   settingsSet = true;
-
+            
             // **When** the setup listener is called and the resource and settings have been set for the microservice
             if(resourceSet && settingsSet) {
               // **Then** Arc will remove the setup listener

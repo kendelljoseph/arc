@@ -20,13 +20,8 @@
             <div id="jump_page">
               
                 
-                <a class="source" href="check_config.html">
-                  support/check_config.js
-                </a>
-              
-                
-                <a class="source" href="create_api_server.html">
-                  support/create_api_server.js
+                <a class="source" href="check_manifest.html">
+                  support/check_manifest.js
                 </a>
               
                 
@@ -72,7 +67,7 @@
               <h1 id="arc-support">Arc | Support</h1>
 <h3 id="microservice-creation">Microservice Creation</h3>
 <ul>
-<li>Arc creates microservices using a <code>worker pool</code> and <code>configuration</code></li>
+<li>Arc creates microservices using a <code>worker pool</code> and a <code>manifest</code></li>
 </ul>
 
             </div>
@@ -90,9 +85,9 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> { slug } = <span class="hljs-built_in">require</span>(<span class="hljs-string">`<span class="hljs-subst">${process.cwd()}</span>/dependencies`</span>);
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> { slug } = <span class="hljs-built_in">require</span>(<span class="hljs-string">`../dependencies`</span>);
 
-<span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">workerPool, configs</span>) =&gt;</span> {
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">workerPool, microserviceManifest</span>) =&gt;</span> {
   <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =&gt;</span> {</pre></div></div>
             
         </li>
@@ -104,11 +99,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p><strong>Given</strong> Arc gets the titles of the microservices from the configurations object</p>
+              <p><strong>Given</strong> Arc gets the titles of the microservices from the manifest object</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">const</span> titles = <span class="hljs-built_in">Object</span>.keys(configs);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">const</span> titles = <span class="hljs-built_in">Object</span>.keys(microserviceManifest);</pre></div></div>
             
         </li>
         
@@ -134,11 +129,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p><strong>And</strong> Arc gets the configuration for the microservice</p>
+              <p><strong>And</strong> Arc gets the manifest for the microservice</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">const</span> config = configs[unformattedTitle];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">const</span> manifest = microserviceManifest[unformattedTitle];</pre></div></div>
             
         </li>
         
@@ -177,11 +172,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p><strong>Then</strong> Arc returns the microservice with the <code>title</code>, <code>config</code> and <code>pool</code> set</p>
+              <p><strong>Then</strong> Arc returns the microservice with the <code>title</code>, <code>manifest</code> and <code>pool</code> set</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">return</span> { title, config, <span class="hljs-attr">pool</span>: workerPool({title, config})};
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">return</span> { title, manifest, <span class="hljs-attr">pool</span>: workerPool({title, manifest})};
     });</pre></div></div>
             
         </li>

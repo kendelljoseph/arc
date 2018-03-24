@@ -20,13 +20,8 @@
             <div id="jump_page">
               
                 
-                <a class="source" href="check_config.html">
-                  support/check_config.js
-                </a>
-              
-                
-                <a class="source" href="create_api_server.html">
-                  support/create_api_server.js
+                <a class="source" href="check_manifest.html">
+                  support/check_manifest.js
                 </a>
               
                 
@@ -89,11 +84,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Arc detrmines if the microservice has a config file matching known microservices</p>
+              <p>Arc detrmines if the microservice has a manifest file matching known microservices</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">const</span> matchingConfig = microservices.find(<span class="hljs-function">(<span class="hljs-params">{title}</span>) =&gt;</span> {
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">const</span> matchingManifest = microservices.find(<span class="hljs-function">(<span class="hljs-params">{title}</span>) =&gt;</span> {
       <span class="hljs-keyword">return</span> title === microservice.title;
     });</pre></div></div>
             
@@ -213,13 +208,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>Arc will trigger a notification with the message using the <code>protocol</code> if the microservice has a config that matches known microservices</p>
+              <p>Arc will trigger a notification with the message using the <code>protocol</code> if the microservice has a manifest that matches known microservices</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(matchingConfig) {
-      <span class="hljs-keyword">const</span> { config } = matchingConfig;
-      paperboy.trigger(<span class="hljs-string">`<span class="hljs-subst">${config.protocol}</span><span class="hljs-subst">${microservice.title}</span>`</span>, responseMessage);
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(matchingManifest) {
+      <span class="hljs-keyword">const</span> { manifest } = matchingManifest;
+      paperboy.trigger(<span class="hljs-string">`<span class="hljs-subst">${manifest.protocol}</span><span class="hljs-subst">${microservice.title}</span>`</span>, responseMessage);
     }
 
   };

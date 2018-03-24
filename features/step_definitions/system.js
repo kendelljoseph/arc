@@ -2,7 +2,6 @@
 
 // Dependencies
 // ------------
-const slug   = require(`slug`);
 const chai   = require(`chai`);
 const should = chai.should();
 const expect = chai.expect;
