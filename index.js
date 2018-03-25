@@ -51,7 +51,7 @@ module.exports = (microserviceManifest = require(`${process.cwd()}/microservice.
         // **And** Arc sets the intersystem communication events for microservies it created
         await setProtocolEvents(allMicroservices);
 
-        // **And* Arc waits for extensions to do their thing
+        // **And** Arc waits for extensions to do their thing
         await Promise.all(module.exports._extensions.map(({extension, options}) => {
           return new Promise((resolve) => {
             resolve(extension({paperboy, microservices: allMicroservices, options}));
