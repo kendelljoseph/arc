@@ -1,7 +1,7 @@
 {
   "name": "arcms",
-  "version": "1.0.21",
-  "description": "A Microservice Framework",
+  "version": "1.0.22",
+  "description": "A Node Development Framework",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/cucumber-js",
@@ -15,14 +15,16 @@
   },
   "keywords": [
     "Arc",
-    "Microservices"
+    "Microservices",
+    "Node",
+    "Development"
   ],
   "author": "Kendell Joseph",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/altereagle/arc/issues"
+    "url": "https://www.pivotaltracker.com/n/projects/2148007"
   },
-  "homepage": "https://github.com/altereagle/arc#readme",
+  "homepage": "https://github.com/altereagle/arc/wiki",
   "dependencies": {
     "colors": "^1.2.1",
     "dotenv": "^5.0.1",

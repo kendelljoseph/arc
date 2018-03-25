@@ -21,7 +21,6 @@ module.exports = {
       resourceFolder: `features/support/sample_data`,
       description   : `A microservice for testing`,
       count         : 2,
-      maxWorkTime   : 10000,
       settings      : `custom-settings`
     }
   },
