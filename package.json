@@ -1,7 +1,7 @@
 {
   "name": "arcms",
-  "version": "1.0.22",
-  "description": "A Node Development Framework",
+  "version": "1.0.23",
+  "description": "A Node Development Microservice Framework",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/cucumber-js",
