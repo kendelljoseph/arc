@@ -187,8 +187,9 @@ process.on(`message`, (job) => {
   roundCounts.push(metrics.job.round);
   process.send({
     __job: {
-      remaining: metrics.job.remaining,
-      median   : getJobMedians()
+      remaining: metrics.job.remaining
+      // TODO: Optimize for scale
+      //median   : getJobMedians()
     }
   });
 
@@ -206,8 +207,9 @@ process.on(`message`, (job) => {
       // **And** the process notifies the master process when the job is done
       process.send({
         __job: {
-          remaining: metrics.job.remaining,
-          median   : getJobMedians()
+          remaining: metrics.job.remaining
+          // TODO: Optimize for scale
+          //median   : getJobMedians()
         }
       });
     } catch (error) {
