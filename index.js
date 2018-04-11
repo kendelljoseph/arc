@@ -21,6 +21,7 @@ const messageParser       = require(`./support/message_parser`)({paperboy});
 const createWorkerPool    = require(`./support/create_worker_pool`)({paperboy});
 const createMicroservices = require(`./support/microservice_creator`);
 const setProtocolEvents   = require(`./support/protocol_event_setter`)({paperboy});
+const monitor             = require(`./support/monitor`);
 
 // Arc creates a global variable to store a reference to microservices
 let allMicroservices = {};
@@ -38,16 +39,21 @@ const workerPool = (options) => createWorkerPool(parseMessage, options);
 const shutdownMicroservices = require(`./support/shutdown_microservices`)({paperboy});
 
 // #### Arc can create pools of microservices
-module.exports = (microserviceManifest = require(`${process.cwd()}/microservice.manifest.js`)) => {
+module.exports = (microserviceManifest = require(`${process.cwd()}/microservice.manifest.js`), options = {}) => {
+  // Arc monitors activitiy
+  if(options.monitor != false) {
+    monitor({paperboy});
+  }
+
   return new Promise((resolve, reject) => {
     void async function(){
       try {
         // **Given** Arc checks the manifest file to see if it has any errors
         const parsedManifest = await checkManifest(microserviceManifest);
-        
+
         // **And** Arc creates microservices
         allMicroservices    = await createMicroservices(workerPool, parsedManifest);
-        
+
         // **And** Arc sets the intersystem communication events for microservies it created
         await setProtocolEvents(allMicroservices);
 
@@ -57,7 +63,7 @@ module.exports = (microserviceManifest = require(`${process.cwd()}/microservice.
             resolve(extension({paperboy, microservices: allMicroservices, options}));
           });
         }));
-        
+
         // **And** Arc uses paperboy to let the system know about microservices that are online
         allMicroservices.forEach((microservice) => {
           paperboy.trigger(`@health`, JSON.stringify({
@@ -70,7 +76,7 @@ module.exports = (microserviceManifest = require(`${process.cwd()}/microservice.
         // **Then** Arc returns the microservices it created
         resolve(allMicroservices);
       } catch (error) {
-        
+
         // **But** Arc returns an error message when something goes wrong
         reject(error);
       }
@@ -78,7 +84,7 @@ module.exports = (microserviceManifest = require(`${process.cwd()}/microservice.
   });
 };
 
-// Arc adds the steps it uses to the exported module 
+// Arc adds the steps it uses to the exported module
 // > this is only for testing what Arc can do
 module.exports._steps = {
   checkManifest, parseMessage, workerPool,
