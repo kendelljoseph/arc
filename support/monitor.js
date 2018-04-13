@@ -3,7 +3,7 @@
 // ### Monitor Arc activitiy
 
 // Arc monitor loads dependencies
-const {colors} = require(`${process.cwd()}/dependencies`);
+const {colors} = require(`../dependencies`);
 
 // Arc monitor loads support modules
 const Paperboy = require(`paperboy-communicator`);
