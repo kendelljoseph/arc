@@ -13,7 +13,7 @@ const Paperboy = require(`paperboy-communicator`);
 let paperboy;
 
 // Arc can exits the microservice as cleanly as possible
-const cleanExit = () => process.exit(0); 
+const cleanExit = () => process.exit(0);
 
 process.on(`SIGINT`, cleanExit);
 process.on(`SIGTERM`, cleanExit);
@@ -38,18 +38,22 @@ const setTitleAndWork = ([title, workName, resourceFolder]) => {
   const workPath = `${process.cwd()}/${resourceFolder}/${workName}`;
   paperboy            = new Paperboy({connectionName: `${title}`});
   paperboy._cacheName = `cache://${title}`;
-  
+
   try {
     fs.accessSync(workPath, fs.constants.R_OK | fs.constants.W_OK);
     work                = require(workPath);
     // - Arc notifies the master process that the title and work for this process is set
     process.send(`*setup://title/work/set`);
   } catch (err) {
-    console.error(`${workPath} - does not exist! Create a resource for this microservice!`);
-    
+    if(!workName || workName === `undefined`){
+      console.error(`You need to define a resource to use for a microservice in ${process.cwd()}/${resourceFolder}!`);
+    } else {
+      console.error(`${process.cwd()}/${resourceFolder} - does not contain the resource, ${workName}!`);
+    }
+
     // - Arc sets default work for microservices without defined resources
-    work = (data) => `You need to create a resource for this microservice here - ${workPath}`;
-    
+    work = (data) => `You need to create a resource for this microservice here - ${process.cwd()}/${resourceFolder}`;
+
     // - Arc notifies the master process that the work for this process failed to set
     process.send(`*setup://title/work/set`);
   }
@@ -100,7 +104,7 @@ const endJob = (result, error) => {
 
   // - Arc sends the result or errors to the master process
   process.send(result || error);
-  
+
   // - Arc sends the metrics to the master process
   process.send({__metrics: metrics});
   if(metrics.job.remaining === 0) {
@@ -197,10 +201,10 @@ process.on(`message`, (job) => {
     try {
       // **And** the process starts the job
       const incoming = await startJob(job);
-      
+
       // **Then** the process does the work
       let result = await doJob({incoming, settings});
-      
+
       // **And** the process ends the job
       endJob(result);
 
