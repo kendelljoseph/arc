@@ -4,6 +4,7 @@
 
 // Arc loads node modules it depends to operate
 const { dotenv } = require(`./dependencies`);
+const fs         = require(`fs`);
 
 // Arc adds the `.env file` variables to the process
 dotenv.config();
@@ -39,7 +40,7 @@ const workerPool = (options) => createWorkerPool(parseMessage, options);
 const shutdownMicroservices = require(`./support/shutdown_microservices`)({paperboy});
 
 // #### Arc can create pools of microservices
-module.exports = (microserviceManifest = require(`${process.cwd()}/microservice.manifest.js`), options = {}) => {
+module.exports = (microserviceManifest, options = {}) => {
   // Arc monitors activitiy
   if(options.monitor != false) {
     monitor({paperboy});
