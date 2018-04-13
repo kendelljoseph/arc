@@ -46,7 +46,7 @@ const setTitleAndWork = ([title, workName, resourceFolder]) => {
     process.send(`*setup://title/work/set`);
   } catch (err) {
     if(!workName || workName === `undefined`){
-      console.error(`You need to define a resource to use for a microservice in ${process.cwd()}/${resourceFolder}!`);
+      console.error(`You need to define a resource to use for a microservice in ${process.cwd()}/${resourceFolder}`);
     } else {
       console.error(`${process.cwd()}/${resourceFolder} - does not contain the resource, ${workName}!`);
     }
