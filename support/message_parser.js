@@ -9,7 +9,7 @@ module.exports = ({paperboy}) => {
     });
 
     // #### Trigger Error, Work, and Job notifications
-    
+
     // Arc will trigger a notification for work errors
     if(message && message.__error) {
       return paperboy.trigger(`@error`, JSON.stringify({title: microservice.title, metrics: message.__error, pid: process.pid}));
@@ -25,18 +25,17 @@ module.exports = ({paperboy}) => {
       return paperboy.trigger(`@job`, JSON.stringify({title: microservice.title, metrics: message.__job, pid: process.pid}));
     }
 
-    // #### Trigger Protocol Based Notification
-    
+    // #### Trigger Event Based Notification
+
     // Arc will not respond if the message is empty
     if(message.constructor === Object && Object.keys(message).length === 0) return;
-    
+
     // Arc will convert the message to a `string` if it is not already
     const responseMessage = typeof message === `string` ? message : JSON.stringify(message);
 
-    // Arc will trigger a notification with the message using the `protocol` if the microservice has a manifest that matches known microservices
+    // Arc will trigger an event with the message using the `title` of the microservice
     if(matchingManifest) {
-      const { manifest } = matchingManifest;
-      paperboy.trigger(`${manifest.protocol}${microservice.title}`, responseMessage);
+      paperboy.trigger(`${microservice.title}`, responseMessage);
     }
 
   };

@@ -1,11 +1,12 @@
-// Sample service for testing
-// --------------------------
+// # Sample microservice
+// ### Used for testing what microservices can do
+
 module.exports = ({settings = {}, incoming = {}}) => {
-  const {protocol, path, data} = incoming;
+  const {title, path, data} = incoming;
 
   const pathRelatedThings = {
-    'get/protocol': () => {
-      return protocol;
+    'get/title': () => {
+      return title;
     },
     'get/path': () => {
       return path;

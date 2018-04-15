@@ -76,7 +76,7 @@ Given(/^a system loads microservices using arc$/, function(){
 
 // Send data to the microservice
 // -----------------------------
-Given(/^paperboy listens to (.*) and sends (.*) to the root protocol$/, function(fullTitle, dataKey){
+Given(/^paperboy listens to (.*) and sends (.*) to the root path$/, function(fullTitle, dataKey){
   expect(this.paperboy).to.be.an(`object`);
   expect(this.sampleData).to.be.an(`object`);
   expect(this.sampleData.generic).to.be.an(`object`);
@@ -85,14 +85,14 @@ Given(/^paperboy listens to (.*) and sends (.*) to the root protocol$/, function
   expect(this.microserices[fullTitle]).to.be.an(`object`);
   const microservice = this.microserices[fullTitle];
   const data         = this.sampleData.generic[dataKey];
-  const eventName    = `${microservice.manifest.protocol}${microservice.title}`;
+  const eventName    = `${microservice.title}`;
   return new Promise((resolve, reject) => {
     this.paperboy.once(eventName, (returnData) => {
       this.paperboyResponse[fullTitle] = returnData;
       resolve();
     })
       .then(() => {
-        return this.paperboy.trigger(microservice.manifest.protocol, data);
+        return this.paperboy.trigger(`@${microservice.title}`, data);
       })
       .catch(reject);
   });
@@ -109,14 +109,14 @@ Given(/^paperboy listens to (.*) and sends (.*) to the path (.*)$/, function(ful
   expect(this.microserices[fullTitle]).to.be.an(`object`);
   const microservice = this.microserices[fullTitle];
   const data         = this.sampleData.generic[dataKey];
-  const eventName    = `${microservice.manifest.protocol}${microservice.title}`;
+  const eventName    = `${microservice.title}`;
   return new Promise((resolve, reject) => {
     this.paperboy.once(eventName, (returnData) => {
       this.paperboyResponse[fullTitle] = returnData;
       resolve();
     })
       .then(() => {
-        return this.paperboy.trigger(`${microservice.manifest.protocol}${path}`, data);
+        return this.paperboy.trigger(`@${microservice.title}/${path}`, data);
       })
       .catch(reject);
   });

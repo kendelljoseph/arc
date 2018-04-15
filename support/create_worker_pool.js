@@ -15,7 +15,6 @@ module.exports = ({paperboy}) => {
     manifest.resourceFolder = manifest.resourceFolder || `microservice`;
     manifest.count          = manifest.count || 1;
     manifest.startOnline    = manifest.startOnline || false;
-    manifest.protocol       = manifest.protocol || `unknown://`;
     manifest.description    = manifest.description || `describe what this does`;
 
     const {
@@ -34,9 +33,6 @@ module.exports = ({paperboy}) => {
       // * Arc gets the initial starting state from the manifest
       startOnline,
 
-      // * Arc gets the protocol to use from the manifest
-      protocol,
-
       // * Arc gets the description from the manifest
       description,
 
@@ -54,7 +50,7 @@ module.exports = ({paperboy}) => {
         // **When** Arc creates the microservice object
         const microservice = {
           // **And** Arc adds the configurations to the object
-          title, settings, resource, protocol, maxLoad,
+          title, settings, resource, maxLoad,
 
           // **And** Arc forks a process for the microservice
           process : fork(`${__dirname}/process`)
@@ -63,7 +59,7 @@ module.exports = ({paperboy}) => {
         // **Then** Arc triggers a health notification to indicate the microservice was created
         paperboy.trigger(`@health`, JSON.stringify({
           title: title, metrics: {
-            status: `created`, resource, resourceFolder, protocol, description,
+            status: `created`, resource, resourceFolder, description,
             pid: microservice.process.pid
           }, pid: process.pid}));
 
@@ -118,8 +114,6 @@ module.exports = ({paperboy}) => {
 
       // #### The microservice pool kills processes that are destroyed
       destroy: function(microservice) {
-        // **TODO:** remove protocol events for destroyed processes from paperboy
-
         // Arc kills processes that are destroyed by the pool
         microservice.process.kill();
 
