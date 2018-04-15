@@ -1,15 +1,12 @@
 module.exports = {
   generic: {
-    'test data'         : `testData-${Math.ceil(Math.random() * 100000)}`,
-    'test protocol data': `test://`,
-    'test path data'    : `get/path`,
-    'test settings data': `custom-settings`
+    'test data': `testData-${Math.ceil(Math.random() * 100000)}`,
+    'nothing'  : ``
   },
   microserviceManifest: {
     'Test Microservice': {
-      protocol      : `test://`,
       paths         : [
-        `get/protocol`,
+        `get/title`,
         `get/path`,
         `get/settings`,
         `async/situation`,
@@ -22,20 +19,6 @@ module.exports = {
       description   : `A microservice for testing`,
       count         : 2,
       settings      : `custom-settings`
-    }
-  },
-  paperboy: {
-    keys: {
-      'test key': `paperboy-test-key`
-    },
-    values: {
-      'test value': `paperboy-test-value`
-    },
-    events: {
-      'test event': `_this-is-a-test://`
-    },
-    data: {
-      'test data': `paperboy test data!`
     }
   }
 };

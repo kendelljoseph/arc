@@ -10,5 +10,5 @@ Feature: Arc
       And arc has a step called parseMessage
       And arc has a step called workerPool
       And arc has a step called createMicroservices
-      And arc has a step called setProtocolEvents
+      And arc has a step called setMicroserviceEvents
       # TODO: Test if the steps actually return what they should

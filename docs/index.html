@@ -101,11 +101,12 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> checkManifest       = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/check_manifest`</span>);
-<span class="hljs-keyword">const</span> messageParser       = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/message_parser`</span>)({paperboy});
-<span class="hljs-keyword">const</span> createWorkerPool    = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/create_worker_pool`</span>)({paperboy});
-<span class="hljs-keyword">const</span> createMicroservices = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/microservice_creator`</span>);
-<span class="hljs-keyword">const</span> setProtocolEvents   = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/protocol_event_setter`</span>)({paperboy});</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> checkManifest         = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/check_manifest`</span>);
+<span class="hljs-keyword">const</span> messageParser         = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/message_parser`</span>)({paperboy});
+<span class="hljs-keyword">const</span> createWorkerPool      = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/create_worker_pool`</span>)({paperboy});
+<span class="hljs-keyword">const</span> createMicroservices   = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/microservice_creator`</span>);
+<span class="hljs-keyword">const</span> setMicroserviceEvents = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/microservice_event_setter`</span>)({paperboy});
+<span class="hljs-keyword">const</span> monitor               = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./support/monitor`</span>);</pre></div></div>
             
         </li>
         
@@ -195,10 +196,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">microserviceManifest = <span class="hljs-built_in">require</span>(<span class="hljs-string">`<span class="hljs-subst">${process.cwd()}</span>/microservice.manifest.js`</span></span>)) =&gt;</span> {
-  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
-    <span class="hljs-keyword">void</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-      <span class="hljs-keyword">try</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">microserviceManifest, options = {}</span>) =&gt;</span> {</pre></div></div>
             
         </li>
         
@@ -209,11 +207,17 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p><strong>Given</strong> Arc checks the manifest file to see if it has any errors</p>
+              <p>Arc monitors activitiy</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">const</span> parsedManifest = <span class="hljs-keyword">await</span> checkManifest(microserviceManifest);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span>(options.monitor != <span class="hljs-literal">false</span>) {
+    monitor({paperboy});
+  }
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+    <span class="hljs-keyword">void</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+      <span class="hljs-keyword">try</span> {</pre></div></div>
             
         </li>
         
@@ -224,11 +228,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p><strong>And</strong> Arc creates microservices</p>
+              <p><strong>Given</strong> Arc checks the manifest file to see if it has any errors</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        allMicroservices    = <span class="hljs-keyword">await</span> createMicroservices(workerPool, parsedManifest);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">const</span> parsedManifest = <span class="hljs-keyword">await</span> checkManifest(microserviceManifest);</pre></div></div>
             
         </li>
         
@@ -239,11 +243,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p><strong>And</strong> Arc sets the intersystem communication events for microservies it created</p>
+              <p><strong>And</strong> Arc creates microservices</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">await</span> setProtocolEvents(allMicroservices);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        allMicroservices    = <span class="hljs-keyword">await</span> createMicroservices(workerPool, parsedManifest);</pre></div></div>
             
         </li>
         
@@ -253,6 +257,21 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p><strong>And</strong> Arc sets the intersystem communication events for microservies it created</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">await</span> setMicroserviceEvents(allMicroservices);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p><strong>And</strong> Arc waits for extensions to do their thing</p>
 
@@ -267,11 +286,11 @@
         </li>
         
         
-        <li id="section-17">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p><strong>And</strong> Arc uses paperboy to let the system know about microservices that are online</p>
 
@@ -288,11 +307,11 @@
         </li>
         
         
-        <li id="section-18">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p><strong>Then</strong> Arc returns the microservices it created</p>
 
@@ -304,11 +323,11 @@
         </li>
         
         
-        <li id="section-19">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p><strong>But</strong> Arc returns an error message when something goes wrong</p>
 
@@ -323,13 +342,13 @@
         </li>
         
         
-        <li id="section-20">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>Arc adds the steps it uses to the exported module </p>
+              <p>Arc adds the steps it uses to the exported module</p>
 <blockquote>
 <p>this is only for testing what Arc can do</p>
 </blockquote>
@@ -338,17 +357,17 @@
             
             <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports._steps = {
   checkManifest, parseMessage, workerPool,
-  createMicroservices, setProtocolEvents, getAllMicroservices
+  createMicroservices, setMicroserviceEvents, getAllMicroservices
 };</pre></div></div>
             
         </li>
         
         
-        <li id="section-21">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Arc can shutdown the microservices it created</p>
 
@@ -359,11 +378,11 @@
         </li>
         
         
-        <li id="section-22">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>Arc can be extended</p>
 

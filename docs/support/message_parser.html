@@ -40,8 +40,13 @@
                 </a>
               
                 
-                <a class="source" href="protocol_event_setter.html">
-                  support/protocol_event_setter.js
+                <a class="source" href="microservice_event_setter.html">
+                  support/microservice_event_setter.js
+                </a>
+              
+                
+                <a class="source" href="monitor.html">
+                  support/monitor.js
                 </a>
               
                 
@@ -165,7 +170,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <h4 id="trigger-protocol-based-notification">Trigger Protocol Based Notification</h4>
+              <h4 id="trigger-event-based-notification">Trigger Event Based Notification</h4>
 
             </div>
             
@@ -208,13 +213,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>Arc will trigger a notification with the message using the <code>protocol</code> if the microservice has a manifest that matches known microservices</p>
+              <p>Arc will trigger an event with the message using the <code>title</code> of the microservice</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(matchingManifest) {
-      <span class="hljs-keyword">const</span> { manifest } = matchingManifest;
-      paperboy.trigger(<span class="hljs-string">`<span class="hljs-subst">${manifest.protocol}</span><span class="hljs-subst">${microservice.title}</span>`</span>, responseMessage);
+      paperboy.trigger(<span class="hljs-string">`<span class="hljs-subst">${microservice.title}</span>`</span>, responseMessage);
     }
 
   };

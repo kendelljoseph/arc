@@ -4,7 +4,6 @@
 
 // Arc loads node modules it depends to operate
 const { dotenv } = require(`./dependencies`);
-const fs         = require(`fs`);
 
 // Arc adds the `.env file` variables to the process
 dotenv.config();
@@ -17,12 +16,12 @@ const paperboy = new Paperboy({connectionName: `arc`});
 process.title = `@/_arc-${process.title}`;
 
 // Arc loads support modules
-const checkManifest       = require(`./support/check_manifest`);
-const messageParser       = require(`./support/message_parser`)({paperboy});
-const createWorkerPool    = require(`./support/create_worker_pool`)({paperboy});
-const createMicroservices = require(`./support/microservice_creator`);
-const setProtocolEvents   = require(`./support/protocol_event_setter`)({paperboy});
-const monitor             = require(`./support/monitor`);
+const checkManifest         = require(`./support/check_manifest`);
+const messageParser         = require(`./support/message_parser`)({paperboy});
+const createWorkerPool      = require(`./support/create_worker_pool`)({paperboy});
+const createMicroservices   = require(`./support/microservice_creator`);
+const setMicroserviceEvents = require(`./support/microservice_event_setter`)({paperboy});
+const monitor               = require(`./support/monitor`);
 
 // Arc creates a global variable to store a reference to microservices
 let allMicroservices = {};
@@ -56,7 +55,7 @@ module.exports = (microserviceManifest, options = {}) => {
         allMicroservices    = await createMicroservices(workerPool, parsedManifest);
 
         // **And** Arc sets the intersystem communication events for microservies it created
-        await setProtocolEvents(allMicroservices);
+        await setMicroserviceEvents(allMicroservices);
 
         // **And** Arc waits for extensions to do their thing
         await Promise.all(module.exports._extensions.map(({extension, options}) => {
@@ -89,7 +88,7 @@ module.exports = (microserviceManifest, options = {}) => {
 // > this is only for testing what Arc can do
 module.exports._steps = {
   checkManifest, parseMessage, workerPool,
-  createMicroservices, setProtocolEvents, getAllMicroservices
+  createMicroservices, setMicroserviceEvents, getAllMicroservices
 };
 
 // Arc can shutdown the microservices it created

@@ -40,8 +40,13 @@
                 </a>
               
                 
-                <a class="source" href="protocol_event_setter.html">
-                  support/protocol_event_setter.js
+                <a class="source" href="microservice_event_setter.html">
+                  support/microservice_event_setter.js
+                </a>
+              
+                
+                <a class="source" href="monitor.html">
+                  support/monitor.js
                 </a>
               
                 
@@ -128,7 +133,13 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">const</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    manifest.maxLoad        = manifest.maxLoad || <span class="hljs-number">1</span>;
+    manifest.resourceFolder = manifest.resourceFolder || <span class="hljs-string">`microservice`</span>;
+    manifest.count          = manifest.count || <span class="hljs-number">1</span>;
+    manifest.startOnline    = manifest.startOnline || <span class="hljs-literal">false</span>;
+    manifest.description    = manifest.description || <span class="hljs-string">`describe what this does`</span>;
+
+    <span class="hljs-keyword">const</span> {</pre></div></div>
             
         </li>
         
@@ -162,7 +173,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      maxLoad        = <span class="hljs-number">1</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      maxLoad,</pre></div></div>
             
         </li>
         
@@ -179,7 +190,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      resourceFolder = <span class="hljs-string">`microservice`</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      resourceFolder,</pre></div></div>
             
         </li>
         
@@ -196,7 +207,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      count          = <span class="hljs-number">1</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      count,</pre></div></div>
             
         </li>
         
@@ -213,7 +224,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      startOnline    = <span class="hljs-literal">false</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      startOnline,</pre></div></div>
             
         </li>
         
@@ -225,12 +236,12 @@
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <ul>
-<li>Arc gets the protocol to use from the manifest</li>
+<li>Arc gets the description from the manifest</li>
 </ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      protocol       = <span class="hljs-string">`unknown://`</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      description,</pre></div></div>
             
         </li>
         
@@ -240,23 +251,6 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <ul>
-<li>Arc gets the description from the manifest</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      description    = <span class="hljs-string">`describe what this does`</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <ul>
 <li>Arc gets the settings to pass to the microservice pool from the manifest</li>
@@ -272,11 +266,11 @@
         </li>
         
         
-        <li id="section-14">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <h4 id="microservice-creation">Microservice Creation</h4>
 
@@ -285,11 +279,11 @@
         </li>
         
         
-        <li id="section-15">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p><strong>Given</strong> a new microservice needs to be created to add to the pool</p>
 
@@ -300,11 +294,11 @@
         </li>
         
         
-        <li id="section-16">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p><strong>When</strong> Arc creates the microservice object</p>
 
@@ -315,26 +309,26 @@
         </li>
         
         
-        <li id="section-17">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p><strong>And</strong> Arc adds the configurations to the object</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>          title, settings, resource, protocol, maxLoad,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>          title, settings, resource, maxLoad,</pre></div></div>
             
         </li>
         
         
-        <li id="section-18">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p><strong>And</strong> Arc forks a process for the microservice</p>
 
@@ -346,11 +340,11 @@
         </li>
         
         
-        <li id="section-19">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p><strong>Then</strong> Arc triggers a health notification to indicate the microservice was created</p>
 
@@ -358,7 +352,7 @@
             
             <div class="content"><div class='highlight'><pre>        paperboy.trigger(<span class="hljs-string">`@health`</span>, <span class="hljs-built_in">JSON</span>.stringify({
           <span class="hljs-attr">title</span>: title, <span class="hljs-attr">metrics</span>: {
-            <span class="hljs-attr">status</span>: <span class="hljs-string">`created`</span>, resource, resourceFolder, protocol, description,
+            <span class="hljs-attr">status</span>: <span class="hljs-string">`created`</span>, resource, resourceFolder, description,
             <span class="hljs-attr">pid</span>: microservice.process.pid
           }, <span class="hljs-attr">pid</span>: process.pid}));
 
@@ -367,11 +361,11 @@
         </li>
         
         
-        <li id="section-20">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Arc sets local variables indicating the <code>resource</code> and <code>settings</code> have been set for the microservice</p>
 
@@ -383,11 +377,11 @@
         </li>
         
         
-        <li id="section-21">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <h4 id="microservice-setup">Microservice setup</h4>
 
@@ -396,11 +390,11 @@
         </li>
         
         
-        <li id="section-22">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Arc creates an event listener for microservice setup events</p>
 
@@ -411,11 +405,11 @@
         </li>
         
         
-        <li id="section-23">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p><strong>Given</strong> Arc listens for setup oriented events indicating the <code>resource</code> and <code>settings</code> are set for the microservice</p>
 
@@ -427,11 +421,11 @@
         </li>
         
         
-        <li id="section-24">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p><strong>When</strong> the setup listener is called and the resource and settings have been set for the microservice</p>
 
@@ -442,11 +436,11 @@
         </li>
         
         
-        <li id="section-25">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p><strong>Then</strong> Arc will remove the setup listener</p>
 
@@ -457,11 +451,11 @@
         </li>
         
         
-        <li id="section-26">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p><strong>And</strong> Arc will trigger a health notification for the microservice</p>
 
@@ -477,11 +471,11 @@
         </li>
         
         
-        <li id="section-27">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p><strong>And</strong> Arc will add the <code>message</code> event listener for the microservice</p>
 
@@ -494,11 +488,11 @@
         </li>
         
         
-        <li id="section-28">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p><strong>And</strong> Arc will return the microservice</p>
 
@@ -511,11 +505,11 @@
         </li>
         
         
-        <li id="section-29">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <h4 id="the-microservices-are-setup-by-sending-data-to-the-process">The microservices are setup by sending data to the process</h4>
 
@@ -524,11 +518,11 @@
         </li>
         
         
-        <li id="section-30">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>Arc adds an event listener that listens for microservice setup events</p>
 
@@ -539,26 +533,26 @@
         </li>
         
         
-        <li id="section-31">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>Arc sends the title, resource, and resource folder to the microservice</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>          microservice.process.send(<span class="hljs-string">`*setup://<span class="hljs-subst">${title}</span>//<span class="hljs-subst">${resource}</span>//<span class="hljs-subst">${resourceFolder}</span>`</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>          microservice.process.send(<span class="hljs-string">`*setup://<span class="hljs-subst">${title}</span>//<span class="hljs-subst">${resource}</span>//<span class="hljs-subst">${resourceFolder || <span class="hljs-string">``</span>}</span>`</span>);</pre></div></div>
             
         </li>
         
         
-        <li id="section-32">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>Arc sends the settings to the microservice</p>
 
@@ -571,11 +565,11 @@
         </li>
         
         
-        <li id="section-33">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <h4 id="the-microservice-pool-kills-processes-that-are-destroyed">The microservice pool kills processes that are destroyed</h4>
 
@@ -586,24 +580,11 @@
         </li>
         
         
-        <li id="section-34">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
-              </div>
-              <p><strong>TODO:</strong> remove protocol events for destroyed processes from paperboy</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-35">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>Arc kills processes that are destroyed by the pool</p>
 
@@ -614,11 +595,11 @@
         </li>
         
         
-        <li id="section-36">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>Arc triggers a health notification for the killed microservice process</p>
 
@@ -633,11 +614,11 @@
         </li>
         
         
-        <li id="section-37">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>Arc returns the microservice with a killed process</p>
 
@@ -650,11 +631,11 @@
         </li>
         
         
-        <li id="section-38">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>Arc sets the minimum number of microservice processes available in the pool</p>
 
@@ -665,11 +646,11 @@
         </li>
         
         
-        <li id="section-39">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>Arc sets the maximum number of microservices in the pool</p>
 
@@ -680,11 +661,11 @@
         </li>
         
         
-        <li id="section-40">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>Arc will start the microservice process immediately by default</p>
 

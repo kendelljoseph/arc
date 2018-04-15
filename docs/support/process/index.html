@@ -111,7 +111,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> cleanExit = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> process.exit(<span class="hljs-number">0</span>); 
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> cleanExit = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> process.exit(<span class="hljs-number">0</span>);
 
 process.on(<span class="hljs-string">`SIGINT`</span>, cleanExit);
 process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></div>
@@ -171,8 +171,8 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
   process.title       = <span class="hljs-string">`@/<span class="hljs-subst">${title}</span>`</span>;
   <span class="hljs-keyword">const</span> workPath = <span class="hljs-string">`<span class="hljs-subst">${process.cwd()}</span>/<span class="hljs-subst">${resourceFolder}</span>/<span class="hljs-subst">${workName}</span>`</span>;
   paperboy            = <span class="hljs-keyword">new</span> Paperboy({<span class="hljs-attr">connectionName</span>: <span class="hljs-string">`<span class="hljs-subst">${title}</span>`</span>});
-  paperboy._cacheName = <span class="hljs-string">`cache://<span class="hljs-subst">${title}</span>`</span>;
-  
+  paperboy._cacheName = <span class="hljs-string">`@cache/<span class="hljs-subst">${title}</span>`</span>;
+
   <span class="hljs-keyword">try</span> {
     fs.accessSync(workPath, fs.constants.R_OK | fs.constants.W_OK);
     work                = <span class="hljs-built_in">require</span>(workPath);</pre></div></div>
@@ -194,7 +194,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
             
             <div class="content"><div class='highlight'><pre>    process.send(<span class="hljs-string">`*setup://title/work/set`</span>);
   } <span class="hljs-keyword">catch</span> (err) {
-    <span class="hljs-built_in">console</span>.error(<span class="hljs-string">`<span class="hljs-subst">${workPath}</span> - does not exist! Create a resource for this microservice!`</span>);</pre></div></div>
+    <span class="hljs-keyword">if</span>(!workName || workName === <span class="hljs-string">`undefined`</span>){
+      <span class="hljs-built_in">console</span>.error(<span class="hljs-string">`You need to define a resource to use for a microservice in <span class="hljs-subst">${process.cwd()}</span>/<span class="hljs-subst">${resourceFolder}</span>`</span>);
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-built_in">console</span>.error(<span class="hljs-string">`<span class="hljs-subst">${process.cwd()}</span>/<span class="hljs-subst">${resourceFolder}</span> - does not contain the resource, <span class="hljs-subst">${workName}</span>!`</span>);
+    }</pre></div></div>
             
         </li>
         
@@ -211,7 +215,7 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    work = <span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> <span class="hljs-string">`You need to create a resource for this microservice here - <span class="hljs-subst">${workPath}</span>`</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    work = <span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> <span class="hljs-string">`You need to create a resource for this microservice here - <span class="hljs-subst">${process.cwd()}</span>/<span class="hljs-subst">${resourceFolder}</span>`</span>;</pre></div></div>
             
         </li>
         
@@ -369,6 +373,9 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
             </div>
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> cache = <span class="hljs-keyword">typeof</span> result != <span class="hljs-string">`string`</span> ? <span class="hljs-built_in">JSON</span>.stringify(result) : result;
+
+  <span class="hljs-keyword">if</span>(!cache) <span class="hljs-keyword">return</span>;
+
   paperboy.push(<span class="hljs-string">`<span class="hljs-subst">${paperboy._cacheName}</span>`</span>, cache)</pre></div></div>
             
         </li>
@@ -670,13 +677,7 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
   roundCounts.push(metrics.job.round);
   process.send({
     <span class="hljs-attr">__job</span>: {
-      <span class="hljs-attr">remaining</span>: metrics.job.remaining,
-      <span class="hljs-attr">median</span>   : getJobMedians()
-    }
-  });
-
-  <span class="hljs-keyword">void</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">try</span> {</pre></div></div>
+      <span class="hljs-attr">remaining</span>: metrics.job.remaining</pre></div></div>
             
         </li>
         
@@ -687,11 +688,16 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
-              <p><strong>And</strong> the process starts the job</p>
+              <p>TODO: Optimize for scale
+median   : getJobMedians()</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">const</span> incoming = <span class="hljs-keyword">await</span> startJob(job);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    }
+  });
+
+  <span class="hljs-keyword">void</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">try</span> {</pre></div></div>
             
         </li>
         
@@ -702,11 +708,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
-              <p><strong>Then</strong> the process does the work</p>
+              <p><strong>And</strong> the process starts the job</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">let</span> result = <span class="hljs-keyword">await</span> doJob({incoming, settings});</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">const</span> incoming = <span class="hljs-keyword">await</span> startJob(job);</pre></div></div>
             
         </li>
         
@@ -717,11 +723,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
-              <p><strong>And</strong> the process ends the job</p>
+              <p><strong>Then</strong> the process does the work</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      endJob(result);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">let</span> result = <span class="hljs-keyword">await</span> doJob({incoming, settings});</pre></div></div>
             
         </li>
         
@@ -732,17 +738,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
-              <p><strong>And</strong> the process notifies the master process when the job is done</p>
+              <p><strong>And</strong> the process ends the job</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      process.send({
-        <span class="hljs-attr">__job</span>: {
-          <span class="hljs-attr">remaining</span>: metrics.job.remaining,
-          <span class="hljs-attr">median</span>   : getJobMedians()
-        }
-      });
-    } <span class="hljs-keyword">catch</span> (error) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      endJob(result);</pre></div></div>
             
         </li>
         
@@ -752,6 +752,41 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p><strong>And</strong> the process notifies the master process when the job is done</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      process.send({
+        <span class="hljs-attr">__job</span>: {
+          <span class="hljs-attr">remaining</span>: metrics.job.remaining</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>TODO: Optimize for scale
+median   : getJobMedians()</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        }
+      });
+    } <span class="hljs-keyword">catch</span> (error) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p><strong>But</strong> the process ends the job sending the errors when they are caught</p>
 

@@ -40,8 +40,13 @@
                 </a>
               
                 
-                <a class="source" href="protocol_event_setter.html">
-                  support/protocol_event_setter.js
+                <a class="source" href="microservice_event_setter.html">
+                  support/microservice_event_setter.js
+                </a>
+              
+                
+                <a class="source" href="monitor.html">
+                  support/monitor.js
                 </a>
               
                 
@@ -72,7 +77,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">manifest</span>) =&gt;</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">manifest = {}</span>) =&gt;</span> {</pre></div></div>
             
         </li>
         
@@ -90,7 +95,10 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =&gt;</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">Object</span>.keys(manifest).length === <span class="hljs-number">0</span> &amp;&amp; manifest.constructor === <span class="hljs-built_in">Object</span>) {
+      <span class="hljs-built_in">console</span>.error(<span class="hljs-string">`This Arc manifest is empty!`</span>.red);
+    }</pre></div></div>
             
         </li>
         

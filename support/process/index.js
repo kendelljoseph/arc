@@ -37,7 +37,7 @@ const setTitleAndWork = ([title, workName, resourceFolder]) => {
   process.title       = `@/${title}`;
   const workPath = `${process.cwd()}/${resourceFolder}/${workName}`;
   paperboy            = new Paperboy({connectionName: `${title}`});
-  paperboy._cacheName = `cache://${title}`;
+  paperboy._cacheName = `@cache/${title}`;
 
   try {
     fs.accessSync(workPath, fs.constants.R_OK | fs.constants.W_OK);
@@ -91,6 +91,9 @@ const endJob = (result, error) => {
 
   // - Arc caches the result
   const cache = typeof result != `string` ? JSON.stringify(result) : result;
+
+  if(!cache) return;
+
   paperboy.push(`${paperboy._cacheName}`, cache)
     // - Arc notifies the master process when there is an error caching the result
     .catch((error) => {
