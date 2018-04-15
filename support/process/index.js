@@ -145,6 +145,9 @@ process.cache = (key, value) => {
   });
 };
 
+// Arc saves a reference to paperboy on the process
+process.paperboy = paperboy;
+
 // Arc saves a record of remaining job and round counts
 let remainingCounts = [];
 let roundCounts     = [];

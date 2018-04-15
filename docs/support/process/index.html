@@ -540,12 +540,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
-              <p>Arc saves a record of remaining job and round counts</p>
+              <p>Arc saves a reference to paperboy on the process</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">let</span> remainingCounts = [];
-<span class="hljs-keyword">let</span> roundCounts     = [];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>process.paperboy = paperboy;</pre></div></div>
             
         </li>
         
@@ -556,11 +555,12 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
-              <p>Arc loads requirements for calculating percentiles</p>
+              <p>Arc saves a record of remaining job and round counts</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> calculatePercentile = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./calculate_percentile`</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">let</span> remainingCounts = [];
+<span class="hljs-keyword">let</span> roundCounts     = [];</pre></div></div>
             
         </li>
         
@@ -570,6 +570,21 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Arc loads requirements for calculating percentiles</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> calculatePercentile = <span class="hljs-built_in">require</span>(<span class="hljs-string">`./calculate_percentile`</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>Arc can get the job medians</p>
 
@@ -586,11 +601,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-31">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <h4 id="process-message-handling">Process Message Handling</h4>
 
@@ -601,11 +616,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-32">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p><strong>Given</strong> Arc sets the work this process will do</p>
 
@@ -625,11 +640,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-33">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p><strong>And</strong> Arc sets the settings for this process</p>
 
@@ -648,11 +663,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-34">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p><strong>And</strong> Arc will skip doing work if there is no work to do</p>
 
@@ -663,11 +678,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-35">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p><strong>When</strong> the process notifies the master process that the it is starting the job</p>
 
@@ -682,11 +697,11 @@ process.on(<span class="hljs-string">`SIGTERM`</span>, cleanExit);</pre></div></
         </li>
         
         
-        <li id="section-36">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>TODO: Optimize for scale
 median   : getJobMedians()</p>
@@ -702,11 +717,11 @@ median   : getJobMedians()</p>
         </li>
         
         
-        <li id="section-37">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p><strong>And</strong> the process starts the job</p>
 
@@ -717,11 +732,11 @@ median   : getJobMedians()</p>
         </li>
         
         
-        <li id="section-38">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p><strong>Then</strong> the process does the work</p>
 
@@ -732,11 +747,11 @@ median   : getJobMedians()</p>
         </li>
         
         
-        <li id="section-39">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p><strong>And</strong> the process ends the job</p>
 
@@ -747,11 +762,11 @@ median   : getJobMedians()</p>
         </li>
         
         
-        <li id="section-40">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p><strong>And</strong> the process notifies the master process when the job is done</p>
 
@@ -764,11 +779,11 @@ median   : getJobMedians()</p>
         </li>
         
         
-        <li id="section-41">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p>TODO: Optimize for scale
 median   : getJobMedians()</p>
@@ -782,11 +797,11 @@ median   : getJobMedians()</p>
         </li>
         
         
-        <li id="section-42">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <p><strong>But</strong> the process ends the job sending the errors when they are caught</p>
 
