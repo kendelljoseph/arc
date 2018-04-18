@@ -1,13 +1,14 @@
 {
   "name": "arcms",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A Node Development Microservice Framework",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/cucumber-js",
     "start": "node index.js",
     "coverage-test": "nyc --reporter=lcov --reporter=text-lcov cucumber-js -r features/",
-    "coverage-report": "nyc --reporter=lcov --reporter=text-lcov npm test"
+    "coverage-report": "nyc --reporter=lcov --reporter=text-lcov npm test",
+    "docs": "docco index.js & docco support/* & docco support/process/*"
   },
   "repository": {
     "type": "git",
