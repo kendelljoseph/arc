@@ -6,6 +6,7 @@ Feature: Arc
       And arc has a property called addExtension
       And arc has a property called shutdownMicroservices
       And arc has a property called _steps
+      And arc has a property called paperboy
     Given arc has a step called checkManifest
       And arc has a step called parseMessage
       And arc has a step called workerPool

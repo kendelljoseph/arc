@@ -40,6 +40,7 @@ const shutdownMicroservices = require(`./support/shutdown_microservices`)({paper
 
 // #### Arc can create pools of microservices
 module.exports = (microserviceManifest, options = {}) => {
+
   // Arc monitors activitiy
   if(options.monitor != false) {
     monitor({paperboy});
@@ -100,3 +101,6 @@ module.exports.addExtension = (extension, options = {}) => {
   if(typeof extension != `function`) throw Error(`Arc extension must be a function or a promise`);
   module.exports._extensions.push({extension, options});
 };
+
+// Arc adds a reference to paperboy
+module.exports.paperboy = paperboy;
