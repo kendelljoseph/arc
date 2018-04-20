@@ -39,6 +39,9 @@ const setTitleAndWork = ([title, workName, resourceFolder]) => {
   paperboy            = new Paperboy({connectionName: `${title}`});
   paperboy._cacheName = `@cache/${title}`;
 
+  // Arc saves a reference to paperboy on the process
+  process.paperboy = paperboy;
+
   try {
     fs.accessSync(workPath, fs.constants.R_OK | fs.constants.W_OK);
     work                = require(workPath);
@@ -144,10 +147,6 @@ process.cache = (key, value) => {
       .catch(reject);
   });
 };
-
-// Arc saves a reference to paperboy on the process
-process.paperboy = paperboy;
-
 // Arc saves a record of remaining job and round counts
 let remainingCounts = [];
 let roundCounts     = [];
