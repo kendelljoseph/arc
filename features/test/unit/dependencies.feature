@@ -1,17 +1,17 @@
-Feature: The system has modules/libraries it depends on to do things
+Feature: Arc Dependencies
 
-  In order to insure that the systems services will run
-  The system should check if dependencies are installed
+  In order to insure that arc will run
+  Check if dependencies are installed
 
-  Scenario: The system needs to use a resource installed with NPM
-    Given the system has dependencies
-    Then the system has the dependency colors installed
-      And the system has the dependency dotenv installed
-      And the system has the dependency generic-pool installed
-      And the system has the dependency slug installed
-      And the system has the dependency tdigest installed
-      And the system has the development dependency chai included in the package
-      And the system has the development dependency cucumber included in the package
-      And the system has the development dependency mocha included in the package
-      And the system has the development dependency nodemon included in the package
-      And the system has the development dependency nyc included in the package
+  Scenario: Arc needs to use a resource that should be installed using NPM
+    Given arc has dependencies
+    Then arc has the dependency colors installed
+      And arc has the dependency dotenv installed
+      And arc has the dependency generic-pool installed
+      And arc has the dependency slug installed
+      And arc has the dependency tdigest installed
+      And arc has the development dependency chai included in the package
+      And arc has the development dependency cucumber included in the package
+      And arc has the development dependency mocha included in the package
+      And arc has the development dependency nodemon included in the package
+      And arc has the development dependency nyc included in the package
