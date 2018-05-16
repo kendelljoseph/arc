@@ -53,7 +53,7 @@ module.exports = ({paperboy}) => {
           title, settings, resource, maxLoad,
 
           // **And** Arc forks a process for the microservice
-          process : fork(`${__dirname}/process`)
+          process : fork(`${__dirname}/process`, { stdio: `inherit` })
         };
 
         // **Then** Arc triggers a health notification to indicate the microservice was created
