@@ -2,10 +2,10 @@
 
 // Dependencies
 // ------------
-const slug   = require(`slug`);
-const chai   = require(`chai`);
-const should = chai.should();
-const expect = chai.expect;
+const slugify = require(`slugify`);
+const chai    = require(`chai`);
+const should  = chai.should();
+const expect  = chai.expect;
 const {Given, When, Then, AfterAll} = require(`cucumber`);
 
 // Microservice Manifest
@@ -43,7 +43,7 @@ Given(/^a system loads microservices using arc$/, function(){
         expect(microservices).to.be.an(`array`);
         expect(microservices.length).to.equal(this.data.manifests.length);
 
-        const normalizeTitle = (title) => slug(String(title).toLowerCase());
+        const normalizeTitle = (title) => slugify(String(title).toLowerCase());
 
         microservices.forEach((microservice) => {
           expect(microservice.title).to.be.a(`string`);
