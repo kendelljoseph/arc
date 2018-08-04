@@ -90,7 +90,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> { slug } = <span class="hljs-built_in">require</span>(<span class="hljs-string">`../dependencies`</span>);
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> { slugify } = <span class="hljs-built_in">require</span>(<span class="hljs-string">`../dependencies`</span>);
 
 <span class="hljs-built_in">module</span>.exports = <span class="hljs-function">(<span class="hljs-params">workerPool, microserviceManifest</span>) =&gt;</span> {
   <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =&gt;</span> {</pre></div></div>
@@ -166,7 +166,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">const</span> title = slug(<span class="hljs-built_in">String</span>(unformattedTitle).toLocaleLowerCase());</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">const</span> title = slugify(<span class="hljs-built_in">String</span>(unformattedTitle).toLocaleLowerCase());</pre></div></div>
             
         </li>
         
