@@ -20,5 +20,6 @@ module.exports = {
       count         : 2,
       settings      : `custom-settings`
     }
-  }
+  },
+  extension: {}
 };
