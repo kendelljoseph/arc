@@ -119,7 +119,7 @@ const endJob = (result, error) => {
 };
 
 // This process can get or set cached data
-process.cache = (key, value) => {
+process.cache = (key, value, ...rest) => {
   return new Promise((resolve, reject) => {
     // Arc checks if the key and the value exist
     const keyExists = (typeof key === `string`);
@@ -134,7 +134,7 @@ process.cache = (key, value) => {
 
     // Arc caches the data using `Paperboy` if the cache method is used for saving data
     if(setData) {
-      return paperboy.push(cacheKey, value)
+      return paperboy.push(cacheKey, value, rest[0], rest[1])
         .then(() => {
           resolve(value);
         })
