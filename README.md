@@ -3,7 +3,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/250cba5c85e88cec6dfb/maintainability)](https://codeclimate.com/github/altereagle/arc/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/250cba5c85e88cec6dfb/test_coverage)](https://codeclimate.com/github/altereagle/arc/test_coverage)
 
-A Node Development Microservice Framework
+A Node Prototype Development Microservice Framework
 
 ![gif](https://media.giphy.com/media/kFyLfPH7FU7zW/giphy.gif)
 
